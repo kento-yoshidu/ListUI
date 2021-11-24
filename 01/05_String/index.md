@@ -33,4 +33,27 @@ print(longstr)
 #=>sed do eiusmod tempor incididunt
 ```
 
+## `str()`
+
+```python
+print(str(1)) #=> 1
+print(str(1) + str(10)) #=> 110
+print(str(True)) #=> 1
+print(str(None)) #=> None
+```
+
+## エスケープシーケンス
+
+`\t`でタブ。
+
+```python
+print("a\tbc")
+print("ab\tc")
+print("\tabc")
+#=> a       bc
+#=> ab      c
+#=>         abc
+```
+
+\nで改行。
 
