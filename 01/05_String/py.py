@@ -37,3 +37,23 @@ print("a\nbc")
 #=> a
 #=> bc
 
+## *で繰り返し
+
+print("Na" * 10)
+#=> NaNaNaNaNaNaNaNaNaNa
+
+## オフセット
+
+print("123456"[0])
+#=> 1
+print("123456"[-1])
+#=> 6
+print("123456"[10])
+#=> string index out of range
+
+str = "Hello"
+
+print(str[0] = "T")
+#=> expression cannot contain assignment, perhaps you meant "=="?
+
+"""

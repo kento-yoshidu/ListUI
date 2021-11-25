@@ -57,3 +57,32 @@ print("\tabc")
 
 \nで改行。
 
+## *で繰り返し
+
+```python
+print("Na" * 10)
+#=> NaNaNaNaNaNaNaNaNaNa
+```
+
+## オフセット
+
+JavaScriptの配列のように`[]`の形で文字にアクセスできる。`[-1]`は末尾、文字列数を超えると例外。
+
+```Python
+print("123456"[0])
+#=> 1
+print("123456"[-1])
+#=> 6
+print("123456"[10])
+#=> string index out of range
+```
+
+文字列型はイミュータブルなので、値を書き換えることはできない。
+
+```python
+str = "Hello"
+
+print(str[0] = "T")
+#=> expression cannot contain assignment, perhaps you meant "=="?
+```
+
