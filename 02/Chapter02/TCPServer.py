@@ -7,15 +7,12 @@ PORT = 9998
 def main():
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind((IP, PORT))
-    # 最大接続数
     server.listen(5)
     print(f'[*] Listening in {IP}:{PORT}')
 
     while True:
-        # クライアント情報の受け取り
         client, address = server.accept()
         print(f'[*] Accepted Connection from {address[0]}:{address[1]}')
-        # スレッドオブジェクトの作成
         client_handler = threading.Thread(target=handle_client, args=(client,))
         client_handler.start()
 
