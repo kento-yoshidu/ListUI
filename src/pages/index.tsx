@@ -1,79 +1,45 @@
-import { Box, List, ListItem, ListItemText, Paper, Typography } from '@mui/material'
-import { useState } from 'react'
+import { Box, Typography } from '@mui/material'
+import { useState, useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
+import SearchForm from '@/components/SearchForm'
+import { useSearchParams } from 'next/navigation'
 
-type Data = {
-  id: string
-  title: string
-  content: string
-}
+import { ListComponent } from '@/components/List'
+import { Summary } from '@/components/Summary'
 
-const fetchData = async () => {
-  console.log("fetch");
-  const res = await fetch("http://localhost:8080/books");
+import { type Book } from '@/type/type'
+
+const fetchData = async (id?: string) => {
+  const url = id ? `http://localhost:8080/books/search?id=${id}` : "http://localhost:8080/books"
+  console.log("url = ", url);
+
+  const res = await fetch(url);
   console.log("res = ", res);
   return res.json();
 }
 
-const ListComponent = ({ data, onClick }: { data: Data[], onClick: (item: Data) => void }) => {
-  console.log("data = ", data);
-
-  return (
-    <List sx={{
-      margin: "15px 0",
-      padding: 0,
-      border: "1px solid #aaa",
-    }}>
-      {data.map((item) => (
-        <ListItem
-          key={item.id}
-          onClick={() => onClick(item)}
-          sx={{
-            borderBottom: "1px solid #ddd",
-            transition: "0.3s",
-            "&:hover": {
-              backgroundColor: "#f0f0f0",
-              cursor: "pointer",
-            }
-          }}
-        >
-          <ListItemText primary={item.title} />
-        </ListItem>
-      ))}
-    </List>
-  )
-}
-
-const Summary = ({ selectedItem }: { selectedItem: Data | null }) => {
-  return (
-    <Box
-      sx={{
-        flex: 1,
-        marginTop: 2,
-        padding: 2,
-        border: "1px solid #ddd",
-        borderRadius: 1,
-        backgroundColor: "white",
-        minHeight: "10vh",
-      }}
-    >
-      {selectedItem && (
-        <Paper sx={{ padding: 2 }}>
-          <Typography variant="h6">{selectedItem.title}</Typography>
-          <Typography variant="body1">{selectedItem.content}</Typography>
-        </Paper>
-      )}
-    </Box>
-  )
-}
-
 export default function Home() {
-  const [selectedItem, setSelectedItem] = useState<Data | null>(null);
+  const [selectedItem, setSelectedItem] = useState<Book | null>(null);
+
+  const searchParams = useSearchParams();
+
+  const id = searchParams.get("id") || "";
 
   const { data, error, isLoading } = useQuery({
-    queryKey: ["books"],
-    queryFn: fetchData,
+    queryKey: ["books", id],
+    queryFn: () => fetchData(id),
   });
+
+  useEffect(() => {
+    setSelectedItem(null);
+
+    if (id && data) {
+      const foundItem = data.find((item: Book) => item.id === id);
+      if (foundItem) {
+        setSelectedItem(foundItem);
+      }
+    }
+  }, [id, data]);
 
   if (isLoading) return <p>Loading...</p>;
 
@@ -85,6 +51,8 @@ export default function Home() {
       padding: 2,
       border: "1px solid #aaa",
     }}>
+      <SearchForm />
+
       <Typography
         variant="h1"
         sx={{
