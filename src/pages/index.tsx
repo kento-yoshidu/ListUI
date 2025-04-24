@@ -1,105 +1,50 @@
-import { Box, Typography } from '@mui/material'
-import { useState, useEffect } from 'react'
-import { useQuery } from '@tanstack/react-query'
-import SearchForm from '@/components/SearchForm'
-import { useSearchParams } from 'next/navigation'
-
-import { ListComponent } from '@/components/List'
-import { Summary } from '@/components/Summary'
-
-import { type Book } from '@/type/type'
-
-const fetchData = async (id?: string) => {
-  const url = id ? `http://localhost:8080/books/search?id=${id}` : "http://localhost:8080/books"
-  console.log("url = ", url);
-
-  const res = await fetch(url);
-  console.log("res = ", res);
-  return res.json();
-}
+import { useGetFiles } from "@/hooks/useGetFiles";
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { Folder } from "@mui/icons-material";
+import { useState } from "react";
 
 export default function Home() {
-  const [selectedItem, setSelectedItem] = useState<Book | null>(null);
+  const [currentPath, setCurrentPath] = useState<number>(1);
 
-  const searchParams = useSearchParams();
-
-  const id = searchParams.get("id") || "";
-
-  const { data, error, isLoading } = useQuery({
-    queryKey: ["books", id],
-    queryFn: () => fetchData(id),
-  });
-
-  useEffect(() => {
-    setSelectedItem(null);
-
-    if (id && data) {
-      const foundItem = data.find((item: Book) => item.id === id);
-      if (foundItem) {
-        setSelectedItem(foundItem);
-      }
-    }
-  }, [id, data]);
+  const { data, isLoading } = useGetFiles(currentPath);
 
   if (isLoading) return <p>Loading...</p>;
 
   return (
-    <Box sx={{
-      width: "95%",
-      height: "80vh",
-      margin: "9vh auto",
-      padding: 2,
-      border: "1px solid #aaa",
-    }}>
-      <SearchForm />
+    <>
+      <Typography>子フォルダー一覧 {data.folder.id}</Typography>
 
-      <Typography
-        variant="h1"
-        sx={{
-          fontSize: 30,
-          fontWeight: "bold",
-        }}
-      >
-        List
-      </Typography>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableCell>title</TableCell>
+            <TableCell>description</TableCell>
+          </TableHead>
 
-      <Typography
-        variant="h2"
-        sx={{
-          margin: "10px 0",
-          fontSize: 18,
-          fontWeight: "bold",
-        }}
-      >
-        {selectedItem?.title}
-      </Typography>
+          <TableBody>
+            {data.child_folders.map((folder: any) => (
+              <TableRow
+                key={folder.id}
+                onDoubleClick={() => setCurrentPath(folder.id)}
+                hover
+              >
+                <Folder color="primary" />
+                <TableCell>{folder.name}</TableCell>
+                <TableCell>{folder.description}</TableCell>
+              </TableRow>
+            ))}
 
-      <Box
-        sx={{
-          display: "flex",
-          gap: 2,
-        }}
-      >
-        <Box
-          sx={{
-            flex: selectedItem ? 1 : 2,
-            transition: "0.3s",
-          }}
-        >
-          <ListComponent data={data} onClick={setSelectedItem} />
-        </Box>
-
-        {selectedItem && (
-          <Box
-            sx={{
-              flex: 1,
-              transition: "0.3s",
-            }}
-          >
-            <Summary selectedItem={selectedItem} />
-          </Box>
-        )}
-      </Box>
-    </Box>
+            {/* 写真の一覧 */}
+            {data.photos.map((photo: any) => (
+              <TableRow key={`photo-${photo.id}`}>
+                <TableCell>🖼️ 写真</TableCell>
+                <TableCell>{photo.title || "（無題）"}</TableCell>
+                <TableCell>{photo.description || "-"}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
   )
 }
