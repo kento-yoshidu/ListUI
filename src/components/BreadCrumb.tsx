@@ -12,8 +12,6 @@ type Props = {
 };
 
 export const BreadCrumb: React.FC<Props> = ({ breadcrumbs, setCurrentPath }) => {
-  console.log("bread", breadcrumbs);
-
   return (
     <Container maxWidth="md">
       <Grid container spacing={3}>
@@ -37,11 +35,6 @@ export const BreadCrumb: React.FC<Props> = ({ breadcrumbs, setCurrentPath }) => 
               )
             )}
           </Breadcrumbs>
-        </Grid>
-
-        <Grid item xs={12}>
-          {/* フォルダーや写真などの中身 */}
-          <Typography variant="h5">このフォルダーの中身</Typography>
         </Grid>
       </Grid>
     </Container>

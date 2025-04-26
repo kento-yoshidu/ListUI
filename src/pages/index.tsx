@@ -1,15 +1,57 @@
+import { useState, type MouseEvent } from "react";
 import { useGetFiles } from "@/hooks/useGetFiles";
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
-import { Folder } from "@mui/icons-material";
-import { useState } from "react";
+import { Checkbox, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import { BreadCrumb } from "@/components/BreadCrumb";
+import FolderIcon from "@mui/icons-material/Folder";
+import { FILE_TYPE } from "@/constants";
+
+type Folder = {
+  id: number;
+  name: string;
+};
+
+type File = {
+  id: number;
+  name: string;
+  description: string;
+};
 
 export default function Home() {
   const [currentPath, setCurrentPath] = useState<number>(1);
+  const [selectedFolder, setSelectedFolder] = useState<Folder[]>([]);
+  const [selectedFile, setSelectedFile] = useState<File[]>([]);
 
   const { data, isLoading } = useGetFiles(currentPath);
 
-  if (isLoading) return <p>Loading...</p>;
+  const handleDoubleClick = (folderId: number) => {
+    setCurrentPath(folderId);
+    setSelectedFile([]);
+    setSelectedFolder([]);
+  };
+
+  const handleCheckboxChange = (clicked: Folder | File, type: string) => {
+    if (type === FILE_TYPE.Folder) {
+      setSelectedFolder((prev) => {
+        const exists = prev.find(f => f.id === clicked.id);
+        if (exists) {
+          return prev.filter(f => f.id !== clicked.id);
+        } else {
+          return [...prev, clicked as Folder];
+        }
+      });
+    } else if (type === FILE_TYPE.File) {
+      setSelectedFile((prev) => {
+        const exists = prev.find(f => f.id === clicked.id);
+        if (exists) {
+          return prev.filter(f => f.id !== clicked.id);
+        } else {
+          return [...prev, clicked as File];
+        }
+      });
+    } else {
+      console.error("無効なファイルタイプ");
+    }
+  };
 
   return (
     <>
@@ -22,7 +64,12 @@ export default function Home() {
 
       <TableContainer component={Paper}>
         <Table>
-          <TableHead>
+          <TableHead
+            sx={{
+              backgroundColor: "#989898",
+            }}
+          >
+            <TableCell />
             <TableCell>title</TableCell>
             <TableCell>description</TableCell>
           </TableHead>
@@ -31,21 +78,36 @@ export default function Home() {
             {data.child_folders.map((folder: any) => (
               <TableRow
                 key={folder.id}
-                onDoubleClick={() => setCurrentPath(folder.id)}
+                onDoubleClick={() => handleDoubleClick(folder.id)}
                 hover
               >
-                <Folder color="primary" />
-                <TableCell>{folder.name}</TableCell>
+                <TableCell>
+                  <Checkbox
+                    checked={selectedFolder.some((f) => f.id === folder.id)}
+                    onClick={() => handleCheckboxChange(folder, FILE_TYPE.Folder)}
+                  />
+                </TableCell>
+                <TableCell onClick={() => setSelectedFolder([folder])}>
+                  <FolderIcon />
+                  {folder.name}
+                </TableCell>
                 <TableCell>{folder.description}</TableCell>
               </TableRow>
             ))}
 
-            {/* 写真の一覧 */}
             {data.photos.map((photo: any) => (
               <TableRow key={`photo-${photo.id}`}>
-                <TableCell>🖼️ 写真</TableCell>
-                <TableCell>{photo.title || "（無題）"}</TableCell>
-                <TableCell>{photo.description || "-"}</TableCell>
+                <TableCell>
+                  <Checkbox
+                    checked={selectedFile.some((f) => f.id === photo.id)}
+                    onClick={() => handleCheckboxChange(photo, FILE_TYPE.File)}
+                  />
+                </TableCell>
+                <TableCell onClick={() => setSelectedFile([photo])}>
+                  🖼️
+                  {photo.title}
+                </TableCell>
+                <TableCell>{photo.description}</TableCell>
               </TableRow>
             ))}
           </TableBody>
