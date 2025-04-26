@@ -2,6 +2,7 @@ import { useGetFiles } from "@/hooks/useGetFiles";
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import { Folder } from "@mui/icons-material";
 import { useState } from "react";
+import { BreadCrumb } from "@/components/BreadCrumb";
 
 export default function Home() {
   const [currentPath, setCurrentPath] = useState<number>(1);
@@ -13,6 +14,11 @@ export default function Home() {
   return (
     <>
       <Typography>子フォルダー一覧 {data.folder.id}</Typography>
+
+      <BreadCrumb
+        breadcrumbs={data.breadcrumbs}
+        setCurrentPath={setCurrentPath}
+      />
 
       <TableContainer component={Paper}>
         <Table>
