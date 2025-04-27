@@ -13,8 +13,9 @@ export type Folder = {
 
 export type File = {
   id: number;
-  name: string;
+  title: string;
   description: string;
+  image_path: string;
 };
 
 export const TableComponent = () => {
@@ -23,6 +24,8 @@ export const TableComponent = () => {
   const [selectedFile, setSelectedFile] = useState<File[]>([]);
 
   const { data, isLoading } = useGetFiles(currentPath);
+
+  console.log("data = ", data);
 
   const handleDoubleClick = (folderId: number) => {
     setCurrentPath(folderId);
@@ -118,7 +121,7 @@ export const TableComponent = () => {
                   }}
                 >
                   <FolderIcon />
-                  {folder.name}
+                  {`${folder.name} (id=${folder.id})`}
                 </TableCell>
                 <TableCell>{folder.description}</TableCell>
               </TableRow>
@@ -139,7 +142,7 @@ export const TableComponent = () => {
                   }}
                 >
                   🖼️
-                  {photo.title}
+                  {`${photo.title} (id=${photo.id})`}
                 </TableCell>
                 <TableCell>{photo.description}</TableCell>
               </TableRow>
