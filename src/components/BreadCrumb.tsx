@@ -1,5 +1,5 @@
 import type { Dispatch, SetStateAction } from "react";
-import { Breadcrumbs, Container, Grid, Grid2, Typography } from "@mui/material";
+import { Box, Breadcrumbs, Container, Grid, Grid2, Typography } from "@mui/material";
 
 type BreadCrumb = {
   id: number;
@@ -13,7 +13,7 @@ type Props = {
 
 export const BreadCrumb: React.FC<Props> = ({ breadcrumbs, setCurrentPath }) => {
   return (
-    <Container maxWidth="md">
+    <Box>
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Breadcrumbs
@@ -37,6 +37,6 @@ export const BreadCrumb: React.FC<Props> = ({ breadcrumbs, setCurrentPath }) => 
           </Breadcrumbs>
         </Grid>
       </Grid>
-    </Container>
+    </Box>
   );
 };
