@@ -16,6 +16,7 @@ export type File = {
   title: string;
   description: string;
   image_path: string;
+  tags: String[];
 };
 
 export const TableComponent = () => {
@@ -24,8 +25,6 @@ export const TableComponent = () => {
   const [selectedFile, setSelectedFile] = useState<File[]>([]);
 
   const { data, isLoading } = useGetFiles(currentPath);
-
-  console.log("data = ", data);
 
   const handleDoubleClick = (folderId: number) => {
     setCurrentPath(folderId);

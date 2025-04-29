@@ -1,5 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { TableComponent } from "@/components/Table";
+import { Upload } from "@/components/upload";
 
 export default function Home() {
   return (
@@ -26,6 +27,8 @@ export default function Home() {
       >
         <TableComponent />
       </main>
+
+      <Upload />
 
       <footer style={{ gridColumn: '1 / span 2', backgroundColor: '#3f51b5', color: 'white', padding: '10px', textAlign: 'center' }}>
         <Typography variant="body2">footer</Typography>

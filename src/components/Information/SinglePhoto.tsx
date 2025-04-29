@@ -17,6 +17,10 @@ export const SinglePhoto = ({ selectedFile }: Props) => {
         width="240px"
         src={selectedFile.image_path}
       />
+
+      {selectedFile.tags.map((tag) => (
+        <p>{tag}</p>
+      ))}
     </>
   )
 }
