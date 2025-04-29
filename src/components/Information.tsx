@@ -20,7 +20,13 @@ export const Information = ({
   }
 
   return (
-    <Box>
+    <Box
+      sx={{
+        height: "100%",
+        borderLeft: "1px solid #444",
+      }
+      }
+    >
       {Component}
     </Box>
   )
