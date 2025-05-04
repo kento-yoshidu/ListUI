@@ -10,11 +10,18 @@ export function Upload() {
 
     setUploading(true);
 
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      throw new Error("No JWT token found in localStorage");
+    }
+
     try {
       // 署名付きURLの取得
       const presignRes = await fetch("http://localhost:8000/generate-presigned-url", {
         method: "POST",
         headers: {
+          "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ filename: file.name }),
@@ -34,7 +41,25 @@ export function Upload() {
 
       if (!uploadRes.ok) throw new Error("Upload failed");
 
+      // レコード追加
+      const saveRes = await fetch("http://localhost:8000/register-photo", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          image_path: public_url,
+          title: "test_hogehoge",
+          folder_id: 3,
+          description: "description",
+        }),
+      });
+
+      if (!saveRes.ok) throw new Error("Failed to save photo info to DB");
+
       setUploadedUrl(public_url);
+      alert("アップロードと保存が完了しました！");
     } catch (err) {
       console.error("Error uploading:", err);
       alert("アップロードに失敗しました");
