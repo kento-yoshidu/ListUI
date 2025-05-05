@@ -5,6 +5,7 @@ import { FILE_TYPE } from "@/constants";
 import FolderIcon from "@mui/icons-material/Folder";
 import { BreadCrumb } from "@/components/BreadCrumb";
 import { Information } from "./Information";
+import { Upload } from "./upload";
 
 export type Folder = {
   id: number;
@@ -156,6 +157,10 @@ export const TableComponent = () => {
           />
         )}
       </Box>
+
+      <Upload
+        currentFolderId={currentPath}
+      />
     </Box>
   )
 }

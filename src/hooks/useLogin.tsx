@@ -1,5 +1,6 @@
 import { useAuth } from "@/context/AuthProvider";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/router";
 
 type Props = {
   email: string;
@@ -18,17 +19,28 @@ const login = async ({ email, password }: Props) => {
   return res.json();
 }
 
-export const useLogin = () => {
+export const useLogin = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess: () => void;
+  onError: (error: any) => void;
+}) => {
+  const router = useRouter();
+
   const { setToken } = useAuth();
 
   return useMutation({
     mutationFn: login,
     onSuccess: (data) => {
       setToken(data.token);
-      window.location.href = "/files";
+      onSuccess?.();
+      setTimeout(() => {
+        router.push("/files");
+      }, 50);
     },
     onError: (error: any) => {
-      console.error("ログイン失敗:", error.message);
+      onError?.(error);
     },
   });
 }

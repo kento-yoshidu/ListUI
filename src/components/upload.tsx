@@ -1,8 +1,12 @@
+import { useSnackbar } from "@/context/SnackBarContext";
+import { useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
 
-export function Upload() {
+export function Upload({ currentFolderId }: { currentFolderId: number }) {
   const [uploading, setUploading] = useState(false);
   const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
+  const { showSnackbar } = useSnackbar();
+  const queryClient = useQueryClient();
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -51,7 +55,7 @@ export function Upload() {
         body: JSON.stringify({
           image_path: public_url,
           title: "test_hogehoge",
-          folder_id: 3,
+          folder_id: currentFolderId,
           description: "description",
         }),
       });
@@ -59,7 +63,9 @@ export function Upload() {
       if (!saveRes.ok) throw new Error("Failed to save photo info to DB");
 
       setUploadedUrl(public_url);
-      alert("アップロードと保存が完了しました！");
+      showSnackbar("画像のアップロードに成功しました");
+
+      queryClient.invalidateQueries({ queryKey: ['file', currentFolderId] });
     } catch (err) {
       console.error("Error uploading:", err);
       alert("アップロードに失敗しました");
