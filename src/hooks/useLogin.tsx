@@ -25,6 +25,7 @@ export const useLogin = () => {
     mutationFn: login,
     onSuccess: (data) => {
       setToken(data.token);
+      window.location.href = "/files";
     },
     onError: (error: any) => {
       console.error("ログイン失敗:", error.message);
