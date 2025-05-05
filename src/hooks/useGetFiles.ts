@@ -5,7 +5,8 @@ const fetchData = async (id: number) => {
 
   const token = localStorage.getItem("token");
 
-  if (!token) {
+  if (!token || token.trim() === "") {
+    redirectToSignin();
     throw new Error("No JWT token found in localStorage");
   }
 
@@ -17,11 +18,22 @@ const fetchData = async (id: number) => {
     }
   });
 
+  if (res.status === 401 || res.status === 403) {
+    redirectToSignin();
+    throw new Error("Unauthorized");
+  }
+
   if (!res.ok) {
     throw new Error('Network response was not ok');
   }
 
   return res.json();
+};
+
+const redirectToSignin = () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("rootFolder");
+  window.location.href = "/signin";
 };
 
 export const useGetFiles = (id: number) => {
