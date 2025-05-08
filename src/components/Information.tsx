@@ -1,20 +1,26 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { File, Folder } from "./Table";
 import { SinglePhoto } from "./Information/SinglePhoto";
 
 type Props = {
-  selectedFolder: Folder[]
+  currentFolderId: number;
+  selectedFolder: Folder[];
   selectedFile: File[];
 }
 
 export const Information = ({
+  currentFolderId,
   selectedFolder,
   selectedFile,
 }: Props) => {
   let Component;
 
   if (selectedFile.length === 1 && selectedFolder.length === 0) {
-    Component = <SinglePhoto selectedFile={selectedFile[0]}/>;
+    Component =
+      <SinglePhoto
+        currentFolderId={currentFolderId}
+        selectedFile={selectedFile[0]}
+      />;
   } else {
     Component = <p>info</p>;
   }

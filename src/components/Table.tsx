@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useGetFiles } from "@/hooks/useGetFiles";
-import { Box, Checkbox, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Box, Checkbox, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { FILE_TYPE } from "@/constants";
 import FolderIcon from "@mui/icons-material/Folder";
 import { BreadCrumb } from "@/components/BreadCrumb";
 import { Information } from "./Information";
+import { Upload } from "./upload";
+import { CreateFolderModal } from "./modal/CreateFolderModal";
 
 export type Folder = {
   id: number;
@@ -23,6 +25,8 @@ export const TableComponent = () => {
   const [currentPath, setCurrentPath] = useState<number>(1);
   const [selectedFolder, setSelectedFolder] = useState<Folder[]>([]);
   const [selectedFile, setSelectedFile] = useState<File[]>([]);
+
+  const [isOpenCreateFolderModal, setIsOpenCreateFolderModal] = useState(false);
 
   const { data, isLoading } = useGetFiles(currentPath);
 
@@ -68,6 +72,7 @@ export const TableComponent = () => {
         display: "flex",
         flexDirection: "column",
         justifyContent: "start",
+        gap: 2,
       }}
     >
       <BreadCrumb
@@ -91,13 +96,13 @@ export const TableComponent = () => {
         >
           <TableHead
             sx={{
-              height: "24px",
+              height: "34px",
               backgroundColor: "#ababab",
             }}
           >
-            <TableCell />
-            <TableCell>title</TableCell>
-            <TableCell>description</TableCell>
+            <TableCell sx={{ padding: "4px", width: "30px" }} />
+            <TableCell sx={{ padding: "4px" }}>title</TableCell>
+            <TableCell sx={{ padding: "4px" }}>description</TableCell>
           </TableHead>
 
           <TableBody>
@@ -151,11 +156,27 @@ export const TableComponent = () => {
 
         {isSelected && (
           <Information
+            currentFolderId={currentPath}
             selectedFile={selectedFile}
             selectedFolder={selectedFolder}
           />
         )}
       </Box>
+
+      <button
+        onClick={() => setIsOpenCreateFolderModal(true)}
+      >
+        Open
+      </button>
+      <Upload
+        currentFolderId={currentPath}
+      />
+
+      <CreateFolderModal
+        open={isOpenCreateFolderModal}
+        onClose={setIsOpenCreateFolderModal}
+        currentPath={currentPath}
+      />
     </Box>
   )
 }
