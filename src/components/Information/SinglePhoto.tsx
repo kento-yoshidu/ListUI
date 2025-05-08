@@ -1,12 +1,12 @@
 import { File } from "../Table";
+import { ButtonList } from "./ButtonList";
 
 type Props = {
+  currentFolderId: number;
   selectedFile: File;
 }
 
-export const SinglePhoto = ({ selectedFile }: Props) => {
-  console.log("se", selectedFile);
-
+export const SinglePhoto = ({ selectedFile, currentFolderId }: Props) => {
   return (
     <>
       <p>
@@ -21,6 +21,11 @@ export const SinglePhoto = ({ selectedFile }: Props) => {
       {selectedFile.tags.map((tag) => (
         <p>{tag}</p>
       ))}
+
+      <ButtonList
+        currentFolderId={currentFolderId}
+        photoId={selectedFile.id}
+      />
     </>
   )
 }
