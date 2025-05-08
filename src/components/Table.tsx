@@ -72,6 +72,7 @@ export const TableComponent = () => {
         display: "flex",
         flexDirection: "column",
         justifyContent: "start",
+        gap: 2,
       }}
     >
       <BreadCrumb
@@ -95,13 +96,13 @@ export const TableComponent = () => {
         >
           <TableHead
             sx={{
-              height: "24px",
+              height: "34px",
               backgroundColor: "#ababab",
             }}
           >
-            <TableCell />
-            <TableCell>title</TableCell>
-            <TableCell>description</TableCell>
+            <TableCell sx={{ padding: "4px", width: "30px" }} />
+            <TableCell sx={{ padding: "4px" }}>title</TableCell>
+            <TableCell sx={{ padding: "4px" }}>description</TableCell>
           </TableHead>
 
           <TableBody>
@@ -174,6 +175,7 @@ export const TableComponent = () => {
       <CreateFolderModal
         open={isOpenCreateFolderModal}
         onClose={setIsOpenCreateFolderModal}
+        currentPath={currentPath}
       />
     </Box>
   )

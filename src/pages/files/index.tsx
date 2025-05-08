@@ -7,7 +7,7 @@ const Files = () => {
       sx={{
         display: "grid",
         gridTemplateRows: "auto 1fr auto",
-        gridTemplateColumns: '150px 1fr',
+        gridTemplateColumns: '200px 1fr',
         height: '100vh',
       }}
     >
@@ -16,12 +16,19 @@ const Files = () => {
       </header>
 
       <aside style={{ backgroundColor: '#f4f4f4', padding: '20px' }}>
-        <Typography variant="h6">side</Typography>
+        <Typography
+          variant="h6"
+          sx={{
+            fontSize: "1rem",
+          }}
+        >
+          File Explorer
+        </Typography>
       </aside>
 
       <main
         style={{
-          padding: "10px",
+          padding: "30px",
         }}
       >
         <TableComponent />

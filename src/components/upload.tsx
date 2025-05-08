@@ -78,16 +78,6 @@ export function Upload({ currentFolderId }: { currentFolderId: number }) {
     <div>
       <input type="file" onChange={handleFileChange} disabled={uploading} />
       {uploading && <p>アップロード中...</p>}
-      {uploadedUrl && (
-        <div>
-          <p>アップロード成功！画像URL:</p>
-          <a href={uploadedUrl} target="_blank" rel="noopener noreferrer">
-            {uploadedUrl}
-          </a>
-          <br />
-          <img src={uploadedUrl} alt="Uploaded" style={{ maxWidth: "300px", marginTop: "10px" }} />
-        </div>
-      )}
     </div>
   );
 }
