@@ -1,7 +1,7 @@
-import { TableComponent } from "@/components/Table";
+import { SearchTableComponent } from "@/components/SearchTable";
 import { Wrapper } from "@/components/Wrapper";
 
-const Files = () => {
+const Search = () => {
   return (
     <Wrapper>
       <main
@@ -9,10 +9,10 @@ const Files = () => {
           padding: "30px",
         }}
       >
-        <TableComponent />
+        <SearchTableComponent />
       </main>
     </Wrapper>
   )
 }
 
-export default Files;
+export default Search;

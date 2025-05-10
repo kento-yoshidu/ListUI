@@ -24,6 +24,7 @@ export const useDeletePhoto = ({ currentFolderId }: { currentFolderId: number })
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['file', currentFolderId] });
+      queryClient.invalidateQueries({ queryKey: ['search'] });
       showSnackbar("画像削除に成功しました");
     },
     onError: (err: any) => {

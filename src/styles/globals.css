@@ -1,9 +1,57 @@
+@import url("./reset");
+
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --main-color: #1675cc;
+  --sub-color: #ff4c89;
+  --body: clamp(0.95rem, 0.95rem + 0.2vw, 1.04rem);
+  --backdrop-color: rgba(0, 0, 0, 0.3);
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+::backdrop {
+  --backdrop-color: rgba(0, 0, 0, 0.3);
+}
+
+html {
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    Roboto,
+    "Segoe UI",
+    "Helvetica Neue",
+    HelveticaNeue,
+    YuGothic,
+    "Yu Gothic Medium",
+    "Yu Gothic",
+    Verdana,
+    Meiryo,
+    sans-serif;
+  scroll-behavior: smooth;
+}
+
+body {
+  --bg-color: #fff;
+  --text-color: #444;
+  --link-color: #444;
+  --heading-bar-color: #37d;
+  --post-link-color: #37d;
+
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-size: var(--body);
+}
+
+body.dark {
+  --bg-color: #15141a;
+  --text-color: #fbfbfe;
+  --link-color: #ddd;
+  --post-link-color: #cc3bcc;
+  --heading-bar-color: #cc3bcc;
+}
+
+body.dark ::backdrop {
+  --backdrop-color: rgba(150, 150, 150, 0.4);
+}
+
+body[data-lock="lock"] {
+  overflow: hidden;
 }
