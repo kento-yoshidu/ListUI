@@ -1,12 +1,7 @@
-import { useEffect, useState } from "react";
-import { useGetFiles } from "@/hooks/useGetFiles";
+import { useState } from "react";
 import { Box, Checkbox, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { FILE_TYPE } from "@/constants";
-import FolderIcon from "@mui/icons-material/Folder";
-import { BreadCrumb } from "@/components/BreadCrumb";
 import { Information } from "./Information";
-import { Upload } from "./upload";
-import { CreateFolderModal } from "./modal/CreateFolderModal";
 import { useSearch } from "@/hooks/useSearch";
 
 export type Folder = {
@@ -25,19 +20,9 @@ export type File = {
 export const SearchTableComponent = () => {
   const { data, isLoading } = useSearch();
 
-  console.log("data = ", data);
-
-  const [currentPath, setCurrentPath] = useState<number>(1);
+  const [currentPath] = useState<number>(1);
   const [selectedFolder, setSelectedFolder] = useState<Folder[]>([]);
   const [selectedFile, setSelectedFile] = useState<File[]>([]);
-
-  const [isOpenCreateFolderModal, setIsOpenCreateFolderModal] = useState(false);
-
-  const handleDoubleClick = (folderId: number) => {
-    setCurrentPath(folderId);
-    setSelectedFile([]);
-    setSelectedFolder([]);
-  };
 
   const handleCheckboxChange = (clicked: Folder | File, type: string) => {
     if (type === FILE_TYPE.Folder) {
@@ -52,6 +37,7 @@ export const SearchTableComponent = () => {
     } else if (type === FILE_TYPE.File) {
       setSelectedFile((prev) => {
         const exists = prev.find(f => f.id === clicked.id);
+
         if (exists) {
           return prev.filter(f => f.id !== clicked.id);
         } else {
@@ -64,10 +50,6 @@ export const SearchTableComponent = () => {
   };
 
   const isSelected = selectedFile.length !== 0 || selectedFolder.length !== 0;
-
-  if (isLoading) {
-    return <p>loading</p>;
-  }
 
   return (
     <Box
@@ -105,28 +87,36 @@ export const SearchTableComponent = () => {
           </TableHead>
 
           <TableBody>
-            {data.map((photo: any) => (
-              <TableRow key={`photo-${photo.id}`}>
-                <TableCell>
-                  <Checkbox
-                    checked={selectedFile.some((f) => f.id === photo.id)}
-                    onClick={() => handleCheckboxChange(photo, FILE_TYPE.File)}
-                  />
+            {isLoading ? (
+              <TableRow>
+                <TableCell colSpan={4}>
+                  <p>loading</p>
                 </TableCell>
-                <TableCell
-                  onClick={() => {
-                    setSelectedFolder([])
-                    setSelectedFile([photo])
-                  }}
-                >
-                  🖼️
-                  {`${photo.title} (id=${photo.id})`}
-                </TableCell>
-                {/* Todo: クリックしたらContext更新してフォルダー遷移 */}
-                <TableCell>{photo.description}</TableCell>
-                <TableCell>{photo.folder_name}</TableCell>
               </TableRow>
-            ))}
+            ) : (
+              data.map((photo: any) => (
+                <TableRow key={`photo-${photo.id}`}>
+                  <TableCell>
+                    <Checkbox
+                      checked={selectedFile.some((f) => f.id === photo.id)}
+                      onClick={() => handleCheckboxChange(photo, FILE_TYPE.File)}
+                    />
+                  </TableCell>
+                  <TableCell
+                    onClick={() => {
+                      setSelectedFolder([])
+                      setSelectedFile([photo])
+                    }}
+                  >
+                    🖼️
+                    {`${photo.title} (${photo.id})`}
+                  </TableCell>
+                  {/* Todo: クリックしたらContext更新してフォルダー遷移 */}
+                  <TableCell>{photo.description}</TableCell>
+                  <TableCell>{photo.folder_name}</TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
 
@@ -138,21 +128,6 @@ export const SearchTableComponent = () => {
           />
         )}
       </Box>
-
-      <button
-        onClick={() => setIsOpenCreateFolderModal(true)}
-      >
-        Open
-      </button>
-      <Upload
-        currentFolderId={currentPath}
-      />
-
-      <CreateFolderModal
-        open={isOpenCreateFolderModal}
-        onClose={setIsOpenCreateFolderModal}
-        currentPath={currentPath}
-      />
     </Box>
   )
 }
