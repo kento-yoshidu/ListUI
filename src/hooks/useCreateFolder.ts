@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "@/context/SnackBarContext";
 
 type Props = {
@@ -8,6 +8,7 @@ type Props = {
 };
 
 export const useCreateFolder = ({ currentFolderId }: { currentFolderId: number}) => {
+  const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
   const queryClient = useQueryClient();
   const { showSnackbar } = useSnackbar();
 
@@ -20,7 +21,7 @@ export const useCreateFolder = ({ currentFolderId }: { currentFolderId: number})
       const token = localStorage.getItem("token");
       if (!token) throw new Error("No token");
 
-      await fetch("http://localhost:8000/create-folder", {
+      await fetch(`${baseUrl}/create-folder`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -40,6 +41,6 @@ export const useCreateFolder = ({ currentFolderId }: { currentFolderId: number})
     onError: (err: any) => {
       console.error("削除エラー:", err);
       showSnackbar("画像削除に失敗しました");
-    }
-  })
+    },
+  });
 };

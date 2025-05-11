@@ -1,7 +1,8 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "@/context/SnackBarContext";
 
 export const useDeletePhoto = ({ currentFolderId }: { currentFolderId: number }) => {
+  const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
   const queryClient = useQueryClient();
   const { showSnackbar } = useSnackbar();
 
@@ -10,7 +11,7 @@ export const useDeletePhoto = ({ currentFolderId }: { currentFolderId: number })
       const token = localStorage.getItem("token");
       if (!token) throw new Error("No token");
 
-      const res = await fetch("http://localhost:8000/delete-photo", {
+      const res = await fetch(`${baseUrl}/delete-photo`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -30,6 +31,6 @@ export const useDeletePhoto = ({ currentFolderId }: { currentFolderId: number })
     onError: (err: any) => {
       console.error("削除エラー:", err);
       showSnackbar("画像削除に失敗しました");
-    }
+    },
   });
 };
