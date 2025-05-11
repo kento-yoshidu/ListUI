@@ -5,10 +5,10 @@ import { FILE_TYPE } from "@/constants";
 import FolderIcon from "@mui/icons-material/Folder";
 import { BreadCrumb } from "@/components/BreadCrumb";
 import { Information } from "./Information";
-import { Upload } from "./upload";
 import { CreateFolderModal } from "./modal/CreateFolderModal";
 import { ButtonList } from "./ButtonList";
 import { UploadPhotoModal } from "./modal/UploadPhotoModal";
+import ImageIcon from '@mui/icons-material/Image';
 
 export type Folder = {
   id: number;
@@ -104,12 +104,13 @@ export const TableComponent = () => {
           gridTemplateColumns: isSelected
             ? "3fr 1fr"
             : "1fr",
-          gap: 2,
+          alignItems: "start",
         }}
       >
         <Table
           sx={{
             width: "100%",
+            fontWeight: 900,
           }}
         >
           <TableHead
@@ -131,16 +132,21 @@ export const TableComponent = () => {
                 hover
                 sx={{
                   cursor: "pointer",
+                  fontWeight: 900,
+                  p: 0,
                 }}
               >
-                <TableCell sx={{ padding: 0 }}>
+                <TableCell
+                  sx={{
+                    p: 0,
+                  }}
+                >
                   <Box
                     sx={{
                       display: 'flex',
                       justifyContent: 'center',
                       alignItems: 'center',
-                      height: '100%',
-                      minHeight: '32px',
+                      p: 0,
                     }}
                   >
                     <Checkbox
@@ -151,22 +157,36 @@ export const TableComponent = () => {
                 </TableCell>
 
                 <TableCell
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    height: "56px",
+                    gap: 1,
+                    fontWeight: 600,
+                    p: 0,
+                  }}
                   onClick={() => {
                     setSelectedFolder([folder])
                     setSelectedFile([])
                   }}
                 >
-                  <FolderIcon />
+                  <FolderIcon
+                    sx={{
+                      color: "orange",
+                      fontSize: 28,
+                    }}
+                  />
                   {`${folder.name} (id=${folder.id})`}
                 </TableCell>
                 <TableCell
                   sx={{
                     padding: "0",
+                    fontWeight: 600,
                   }}
                 >
                   {folder.description}
                 </TableCell>
-                <TableCell />
+                <TableCell sx={{ p: 0 }} />
               </TableRow>
             ))}
 
@@ -178,13 +198,12 @@ export const TableComponent = () => {
                   cursor: "pointer",
                 }}
               >
-                <TableCell sx={{ padding: 0 }}>
+                <TableCell sx={{ p: 0 }}>
                   <Box
                     sx={{
-                      display: 'flex',
+                      display: "flex",
                       justifyContent: 'center',
                       alignItems: 'center',
-                      height: '100%'
                     }}
                   >
                     <Checkbox
@@ -199,12 +218,39 @@ export const TableComponent = () => {
                     setSelectedFolder([])
                     setSelectedFile([photo])
                   }}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 1,
+                    fontWeight: 600,
+                    p: 0,
+                    height: "56px",
+                  }}
                 >
-                  🖼️
+                  <ImageIcon
+                    sx={{
+                      fontSize: 28,
+                      color: "#1976d2",
+                    }}
+                  />
                   {`${photo.title} (id=${photo.id})`}
                 </TableCell>
-                <TableCell>{photo.description}</TableCell>
-                <TableCell>{photo.uploaded_at}</TableCell>
+                <TableCell
+                  sx={{
+                    p: 0,
+                    fontWeight: 600,
+                  }}
+                >
+                  {photo.description}
+                </TableCell>
+                <TableCell
+                  sx={{
+                    p: 0,
+                    fontWeight: 600,
+                  }}
+                >
+                  {photo.uploaded_at}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
