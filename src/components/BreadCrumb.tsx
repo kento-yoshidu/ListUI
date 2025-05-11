@@ -1,5 +1,6 @@
 import type { Dispatch, SetStateAction } from "react";
 import { Box, Breadcrumbs, Container, Grid, Grid2, Typography } from "@mui/material";
+import { File, Folder } from "./Table";
 
 type BreadCrumb = {
   id: number;
@@ -9,9 +10,22 @@ type BreadCrumb = {
 type Props = {
   breadcrumbs: BreadCrumb[];
   setCurrentPath: Dispatch<SetStateAction<number>>;
+  setSelectedFolder: Dispatch<SetStateAction<Folder[]>>;
+  setSelectedFile: Dispatch<SetStateAction<File[]>>;
 };
 
-export const BreadCrumb: React.FC<Props> = ({ breadcrumbs, setCurrentPath }) => {
+export const BreadCrumb: React.FC<Props> = ({
+  breadcrumbs,
+  setCurrentPath,
+  setSelectedFolder,
+  setSelectedFile,
+}) => {
+  const handleClick = (id: number) => {
+    setCurrentPath(id);
+    setSelectedFile([]);
+    setSelectedFolder([]);
+  };
+
   return (
     <Box>
       <Grid container spacing={3}>
@@ -24,7 +38,10 @@ export const BreadCrumb: React.FC<Props> = ({ breadcrumbs, setCurrentPath }) => 
                 <Typography
                   key={bc.id}
                   color="inherit"
-                  onClick={() => setCurrentPath(bc.id)}
+                  onClick={() => handleClick(bc.id)}
+                  sx={{
+                    cursor: "pointer",
+                  }}
                 >
                   {bc.name}
                 </Typography>

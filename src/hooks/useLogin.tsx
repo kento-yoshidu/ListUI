@@ -1,5 +1,5 @@
 import { useAuth } from "@/context/AuthProvider";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 
 type Props = {
@@ -8,7 +8,8 @@ type Props = {
 };
 
 const login = async ({ email, password }: Props) => {
-  const url = `http://localhost:8000/signin`;
+  const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
+  const url = `${baseUrl}/signin`;
 
   const res = await fetch(url, {
     method: "POST",
@@ -17,7 +18,7 @@ const login = async ({ email, password }: Props) => {
   });
 
   return res.json();
-}
+};
 
 export const useLogin = ({
   onSuccess,
@@ -43,4 +44,4 @@ export const useLogin = ({
       onError?.(error);
     },
   });
-}
+};

@@ -1,7 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 
 const fetchData = async (id: number) => {
-  const url = `http://localhost:8000/files/${id}`;
+  const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
+
+  const url = `${baseUrl}/files/${id}`;
 
   const token = localStorage.getItem("token");
 
