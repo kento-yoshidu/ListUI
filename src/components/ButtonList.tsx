@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@mui/material"
+import { Box, Button } from "@mui/material"
 import { Dispatch, SetStateAction } from "react"
 
 type Props = {
