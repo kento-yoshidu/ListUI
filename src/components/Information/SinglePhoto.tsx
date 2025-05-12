@@ -1,12 +1,18 @@
+import { Dispatch, SetStateAction } from "react";
 import { File } from "../Table";
 import { ButtonList } from "./ButtonList";
 
 type Props = {
   currentFolderId: number;
   selectedFile: File;
+  setIsOpenUpdateFolderModal: Dispatch<SetStateAction<boolean>>;
 }
 
-export const SinglePhoto = ({ selectedFile, currentFolderId }: Props) => {
+export const SinglePhoto = ({
+  selectedFile,
+  currentFolderId,
+  setIsOpenUpdateFolderModal,
+}: Props) => {
   return (
     <>
       <p>
@@ -25,6 +31,7 @@ export const SinglePhoto = ({ selectedFile, currentFolderId }: Props) => {
       <ButtonList
         currentFolderId={currentFolderId}
         photoId={selectedFile.id}
+        setIsOpenUpdateFolderModal={setIsOpenUpdateFolderModal}
       />
     </>
   )

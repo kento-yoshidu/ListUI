@@ -9,10 +9,12 @@ import { CreateFolderModal } from "./modal/CreateFolderModal";
 import { ButtonList } from "./ButtonList";
 import { UploadPhotoModal } from "./modal/UploadPhotoModal";
 import ImageIcon from '@mui/icons-material/Image';
+import { UpdateFolderModal } from "./modal/UpdateFolderModal";
 
 export type Folder = {
   id: number;
   name: string;
+  description: string;
 };
 
 export type File = {
@@ -30,6 +32,7 @@ export const TableComponent = () => {
 
   // モーダル開閉管理
   const [isOpenCreateFolderModal, setIsOpenCreateFolderModal] = useState(false);
+  const [isOpenUpdateFolderModal, setIsOpenUpdateFolderModal] = useState(false);
   const [isOpenUploadPhotoModal, setIsOpenUploadPhotoModal] = useState(false);
 
   const { data, isLoading } = useGetFiles(currentPath);
@@ -115,13 +118,13 @@ export const TableComponent = () => {
         >
           <TableHead
             sx={{
-              backgroundColor: "#ababab",
+              backgroundColor: "rgb(187, 196, 200)",
             }}
           >
             <TableCell sx={{ padding: "4px", width: "54px" }} />
-            <TableCell sx={{ padding: "4px" }}>title</TableCell>
-            <TableCell sx={{ padding: "4px" }}>description</TableCell>
-            <TableCell sx={{ padding: "4px" }}>Uploaded At</TableCell>
+            <TableCell sx={{ padding: "4px", color: "rgb(64, 90, 102)", fontWeight: 600 }}>title</TableCell>
+            <TableCell sx={{ padding: "4px", color: "rgb(64, 90, 102)", fontWeight: 600 }}>description</TableCell>
+            <TableCell sx={{ padding: "4px", color: "rgb(64, 90, 102)", fontWeight: 600 }}>Uploaded At</TableCell>
           </TableHead>
 
           <TableBody>
@@ -261,6 +264,7 @@ export const TableComponent = () => {
             currentFolderId={currentPath}
             selectedFile={selectedFile}
             selectedFolder={selectedFolder}
+            setIsOpenUpdateFolderModal={setIsOpenUpdateFolderModal}
           />
         )}
       </Box>
@@ -270,7 +274,13 @@ export const TableComponent = () => {
         onClose={setIsOpenCreateFolderModal}
         currentPath={currentPath}
       />
-
+      <UpdateFolderModal
+        open={isOpenUpdateFolderModal}
+        onClose={setIsOpenUpdateFolderModal}
+        currentPath={currentPath}
+        selectedFolder={selectedFolder[0]}
+        setSelectedFolder={setSelectedFolder}
+      />
       <UploadPhotoModal
         open={isOpenUploadPhotoModal}
         onClose={setIsOpenUploadPhotoModal}
