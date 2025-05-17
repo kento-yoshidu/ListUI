@@ -3,6 +3,7 @@ import { Box, Button, Modal, TextField, Typography } from "@mui/material"
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Folder } from "../Table";
+import { ClassNames } from "@emotion/react";
 
 type FormValues = {
   folderName: string;
@@ -38,8 +39,14 @@ export const UpdateFolderModal = ({
 }: Props) => {
   const { mutate } = useUpdateFolder({
     currentFolderId: currentPath,
-    onSuccess: (updatedFolder) => {
-      setSelectedFolder([updatedFolder]);
+    onSuccess: (res) => {
+      const folder: Folder = {
+        id: res.folder_id,
+        name: res.name,
+        description: res.new_description,
+      };
+
+      setSelectedFolder([folder]);
       onClose(false);
     }
   });

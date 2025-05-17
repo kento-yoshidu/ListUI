@@ -7,13 +7,15 @@ import EditIcon from '@mui/icons-material/Edit';
 type Props = {
   photoId: number;
   currentFolderId: number;
-  setIsOpenUpdateFolderModal: Dispatch<SetStateAction<boolean>>;
+  setIsOpenUpdateFolderModal?: Dispatch<SetStateAction<boolean>>;
+  setIsOpenUpdatePhotoModal?: Dispatch<SetStateAction<boolean>>;
 };
 
 export const ButtonList = ({
   photoId,
   currentFolderId,
   setIsOpenUpdateFolderModal,
+  setIsOpenUpdatePhotoModal,
 }: Props) => {
   const { mutate } = useDeletePhoto({
     currentFolderId
@@ -28,9 +30,16 @@ export const ButtonList = ({
       <DeleteIcon
         onClick={handleClick}
       />
-      <EditIcon
-        onClick={() => setIsOpenUpdateFolderModal(true)}
-      />
+      {setIsOpenUpdateFolderModal && (
+        <EditIcon
+          onClick={() => setIsOpenUpdateFolderModal(true)}
+        />
+      )}
+      {setIsOpenUpdatePhotoModal && (
+        <EditIcon
+          onClick={() => setIsOpenUpdatePhotoModal(true)}
+        />
+      )}
     </Box>
   )
 }

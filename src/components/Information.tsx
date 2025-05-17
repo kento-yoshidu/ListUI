@@ -9,6 +9,7 @@ type Props = {
   selectedFolder: Folder[];
   selectedFile: File[];
   setIsOpenUpdateFolderModal: Dispatch<SetStateAction<boolean>>;
+  setIsOpenUpdatePhotoModal: Dispatch<SetStateAction<boolean>>;
 }
 
 export const Information = ({
@@ -16,6 +17,7 @@ export const Information = ({
   selectedFolder,
   selectedFile,
   setIsOpenUpdateFolderModal,
+  setIsOpenUpdatePhotoModal,
 }: Props) => {
   let Component;
 
@@ -24,7 +26,7 @@ export const Information = ({
       <SinglePhoto
         currentFolderId={currentFolderId}
         selectedFile={selectedFile[0]}
-        setIsOpenUpdateFolderModal={setIsOpenUpdateFolderModal}
+        setIsOpenUpdatePhotoModal={setIsOpenUpdatePhotoModal}
       />;
   } else if (selectedFile.length === 0 && selectedFolder.length === 1) {
     Component =
@@ -39,7 +41,10 @@ export const Information = ({
   return (
     <Box
       sx={{
+        p: 3,
         borderLeft: "1px solid #444",
+        maxHeight: "550px",
+        overflowY: "scroll",
       }}
     >
       {Component}

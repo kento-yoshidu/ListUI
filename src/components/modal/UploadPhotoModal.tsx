@@ -74,7 +74,7 @@ export const UploadPhotoModal = ({ open, onClose, currentPath }: Props) => {
   };
 
   return (
-        <Modal open={open} onClose={() => onClose(false)}>
+    <Modal open={open} onClose={() => onClose(false)}>
       <Box sx={style} component="form" onSubmit={handleSubmit(onSubmit)}>
         <Typography variant="h6" mb={2}>Upload Photo</Typography>
 
