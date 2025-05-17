@@ -1,38 +1,94 @@
 import { Dispatch, SetStateAction } from "react";
 import { File } from "../Table";
 import { ButtonList } from "./ButtonList";
+import { ContentPasteOffSharp } from "@mui/icons-material";
+import { Box, Chip, Typography } from "@mui/material";
 
 type Props = {
   currentFolderId: number;
   selectedFile: File;
-  setIsOpenUpdateFolderModal: Dispatch<SetStateAction<boolean>>;
+  setIsOpenUpdatePhotoModal: Dispatch<SetStateAction<boolean>>;
 }
 
 export const SinglePhoto = ({
   selectedFile,
   currentFolderId,
-  setIsOpenUpdateFolderModal,
+  setIsOpenUpdatePhotoModal,
 }: Props) => {
   return (
-    <>
-      <p>
-        {selectedFile.title}
-      </p>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 3,
+      }}
+    >
+      <Typography
+        sx={{
+          fontSize: 18,
+          fontWeight: 600,
+        }}
+      >{selectedFile.title}</Typography>
 
-      <img
-        width="240px"
+      <Box
+        component="img"
         src={selectedFile.image_path}
+        sx={{
+          maxWidth: "100%",
+          borderRadius: 2,
+          boxShadow: 1,
+        }}
       />
 
-      {selectedFile.tags.map((tag) => (
-        <p>{tag}</p>
-      ))}
+      <Box>
+        <Typography
+          sx={{
+            fontSize: 18,
+            fontWeight: 600,
+          }}
+        >
+          説明
+        </Typography>
+
+        <Typography
+          sx={{
+            fontSize: 15,
+            letterSpacing: "1px"
+          }}
+        >
+          {selectedFile.description}
+        </Typography>
+      </Box>
+
+      <Box>
+        <Typography
+          sx={{
+            fontSize: 16,
+            fontWeight: 600,
+          }}
+        >
+          タグ一覧
+        </Typography>
+
+        <Box
+          sx={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: 1,
+            mt: 1,
+          }}
+        >
+          {selectedFile.tags.map((tag) => (
+            <Chip key={tag.id} label={tag.tag} />
+          ))}
+        </Box>
+      </Box>
 
       <ButtonList
         currentFolderId={currentFolderId}
         photoId={selectedFile.id}
-        setIsOpenUpdateFolderModal={setIsOpenUpdateFolderModal}
+        setIsOpenUpdatePhotoModal={setIsOpenUpdatePhotoModal}
       />
-    </>
+    </Box>
   )
 }

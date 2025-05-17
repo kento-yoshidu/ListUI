@@ -11,7 +11,6 @@ export const Wrapper = ({ children }: { children: ReactNode }) => {
         display: "grid",
         gridTemplateRows: "auto 1fr auto",
         gridTemplateColumns: '200px 1fr',
-        height: '100vh',
       }}
     >
       <Header />

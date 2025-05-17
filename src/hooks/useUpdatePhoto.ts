@@ -1,19 +1,19 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { File } from "@/components/Table";
 import { useSnackbar } from "@/context/SnackBarContext";
-import { Folder } from "@/components/Table";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 type Props = {
-  name: string;
+  title: string;
   description: string;
-  folder_id: number;
+  id: number;
 };
 
-export const useUpdateFolder = ({
+export const useUpdatePhoto = ({
   currentFolderId,
   onSuccess,
 }: {
   currentFolderId: number;
-  onSuccess: (updated: Folder) => void;
+  onSuccess: (updated: File) => void;
 }) => {
   const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
   const queryClient = useQueryClient();
@@ -21,23 +21,24 @@ export const useUpdateFolder = ({
 
   return useMutation({
     mutationFn: async ({
-      name,
+      title,
       description,
-      folder_id,
+      id,
     }: Props) => {
+      console.log("fetch");
       const token = localStorage.getItem("token");
       if (!token) throw new Error("No token");
 
-      const res = await fetch(`${baseUrl}/update-folder`, {
-        method: "PATCH",
+      const res = await fetch(`${baseUrl}/update-photo`, {
+        method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name,
+          title,
           description,
-          folder_id,
+          id,
         }),
       });
 
@@ -53,5 +54,4 @@ export const useUpdateFolder = ({
       showSnackbar("画像削除に失敗しました");
     },
   });
-};
-
+}

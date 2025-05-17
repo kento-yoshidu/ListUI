@@ -10,6 +10,7 @@ import { ButtonList } from "./ButtonList";
 import { UploadPhotoModal } from "./modal/UploadPhotoModal";
 import ImageIcon from '@mui/icons-material/Image';
 import { UpdateFolderModal } from "./modal/UpdateFolderModal";
+import { UpdatePhotoModal } from "./modal/UpdatePhotoModal";
 
 export type Folder = {
   id: number;
@@ -22,7 +23,10 @@ export type File = {
   title: string;
   description: string;
   image_path: string;
-  tags: String[];
+  tags: {
+    id: number;
+    tag: string;
+  }[],
 };
 
 export const TableComponent = () => {
@@ -33,6 +37,7 @@ export const TableComponent = () => {
   // モーダル開閉管理
   const [isOpenCreateFolderModal, setIsOpenCreateFolderModal] = useState(false);
   const [isOpenUpdateFolderModal, setIsOpenUpdateFolderModal] = useState(false);
+  const [isOpenUpdatePhotoModal, setIsOpenUpdatePhotoModal] = useState(false);
   const [isOpenUploadPhotoModal, setIsOpenUploadPhotoModal] = useState(false);
 
   const { data, isLoading } = useGetFiles(currentPath);
@@ -47,6 +52,7 @@ export const TableComponent = () => {
     if (type === FILE_TYPE.Folder) {
       setSelectedFolder((prev) => {
         const exists = prev.find(f => f.id === clicked.id);
+
         if (exists) {
           return prev.filter(f => f.id !== clicked.id);
         } else {
@@ -56,6 +62,7 @@ export const TableComponent = () => {
     } else if (type === FILE_TYPE.File) {
       setSelectedFile((prev) => {
         const exists = prev.find(f => f.id === clicked.id);
+
         if (exists) {
           return prev.filter(f => f.id !== clicked.id);
         } else {
@@ -108,6 +115,9 @@ export const TableComponent = () => {
             ? "3fr 1fr"
             : "1fr",
           alignItems: "start",
+          border: "1px solid #ccc",
+          height: "600px",
+          maxHeight: "80vh",
         }}
       >
         <Table
@@ -265,6 +275,7 @@ export const TableComponent = () => {
             selectedFile={selectedFile}
             selectedFolder={selectedFolder}
             setIsOpenUpdateFolderModal={setIsOpenUpdateFolderModal}
+            setIsOpenUpdatePhotoModal={setIsOpenUpdatePhotoModal}
           />
         )}
       </Box>
@@ -280,6 +291,13 @@ export const TableComponent = () => {
         currentPath={currentPath}
         selectedFolder={selectedFolder[0]}
         setSelectedFolder={setSelectedFolder}
+      />
+      <UpdatePhotoModal
+        open={isOpenUpdatePhotoModal}
+        onClose={setIsOpenUpdatePhotoModal}
+        currentPath={currentPath}
+        selectedFile={selectedFile[0]}
+        setSelectedFile={setSelectedFile}
       />
       <UploadPhotoModal
         open={isOpenUploadPhotoModal}
