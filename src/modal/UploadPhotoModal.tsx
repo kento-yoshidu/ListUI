@@ -1,16 +1,13 @@
-import { useSnackbar } from "@/context/SnackBarContext";
-import { useCreateFolder } from "@/hooks/useCreateFolder";
+import { useState, type Dispatch, type SetStateAction } from "react";
+import { Box, Button, Modal, TextField, Typography } from "@mui/material";
 import { useUploadPhoto } from "@/hooks/useUploadPhoto";
-import { Box, Button, Modal, TextField, Typography } from "@mui/material"
-import { useQueryClient } from "@tanstack/react-query";
-import { Dispatch, SetStateAction, useState } from "react";
 import { useForm } from "react-hook-form";
 
 type Props = {
   open: boolean;
   onClose: Dispatch<SetStateAction<boolean>>;
   currentPath: number;
-}
+};
 
 type FormValues = {
   title: string;
@@ -18,12 +15,12 @@ type FormValues = {
 };
 
 const style = {
-  position: 'absolute' as const,
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
+  position: "absolute" as const,
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: 'background.paper',
+  bgcolor: "background.paper",
   borderRadius: 2,
   boxShadow: 24,
   p: 4,
@@ -61,13 +58,14 @@ export const UploadPhotoModal = ({ open, onClose, currentPath }: Props) => {
           setFile(null);
           onClose(false);
         },
-      }
+      },
     );
   };
 
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selected = e.target.files?.[0];
+
     if (selected) {
       setFile(selected);
     }
@@ -120,5 +118,5 @@ export const UploadPhotoModal = ({ open, onClose, currentPath }: Props) => {
         </Box>
       </Box>
     </Modal>
-  )
-}
+  );
+};

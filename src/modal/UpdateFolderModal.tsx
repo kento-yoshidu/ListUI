@@ -1,9 +1,8 @@
+import { useEffect, type Dispatch, type SetStateAction } from "react";
+import { Box, Button, Modal, TextField, Typography } from "@mui/material";
 import { useUpdateFolder } from "@/hooks/useUpdateFolder";
-import { Box, Button, Modal, TextField, Typography } from "@mui/material"
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Folder } from "../Table";
-import { ClassNames } from "@emotion/react";
+import type { Folder } from "@/type/type";
 
 type FormValues = {
   folderName: string;
@@ -41,9 +40,9 @@ export const UpdateFolderModal = ({
     currentFolderId: currentPath,
     onSuccess: (res) => {
       const folder: Folder = {
-        id: res.folder_id,
+        id: res.id,
         name: res.name,
-        description: res.new_description,
+        description: res.description,
       };
 
       setSelectedFolder([folder]);
@@ -53,8 +52,8 @@ export const UpdateFolderModal = ({
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm<FormValues>({
     defaultValues: {
-      folderName: '',
-      description: '',
+      folderName: "",
+      description: "",
     },
   });
 
@@ -78,7 +77,7 @@ export const UpdateFolderModal = ({
   return (
     <Modal open={open} onClose={() => onClose(false)}>
       <Box sx={style} component="form" onSubmit={handleSubmit(onSubmit)}>
-        <Typography variant="h6" mb={2}>フォルダー作成</Typography>
+        <Typography variant="h6" mb={2}>フォルダーを更新する</Typography>
 
         <TextField
           fullWidth
@@ -102,6 +101,5 @@ export const UpdateFolderModal = ({
         </Box>
       </Box>
     </Modal>
-  )
-}
-
+  );
+};

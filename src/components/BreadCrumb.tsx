@@ -1,6 +1,6 @@
 import type { Dispatch, SetStateAction } from "react";
 import { Box, Breadcrumbs, Grid, Grid2, Typography } from "@mui/material";
-import { File, Folder } from "./Table";
+import { File, Folder } from "@/type/type";
 
 type BreadCrumb = {
   id: number;
@@ -12,6 +12,7 @@ type Props = {
   setCurrentPath: Dispatch<SetStateAction<number>>;
   setSelectedFolder: Dispatch<SetStateAction<Folder[]>>;
   setSelectedFile: Dispatch<SetStateAction<File[]>>;
+  isLoading: boolean;
 };
 
 export const BreadCrumb: React.FC<Props> = ({
@@ -19,6 +20,7 @@ export const BreadCrumb: React.FC<Props> = ({
   setCurrentPath,
   setSelectedFolder,
   setSelectedFile,
+  isLoading,
 }) => {
   const handleClick = (id: number) => {
     setCurrentPath(id);
@@ -30,28 +32,38 @@ export const BreadCrumb: React.FC<Props> = ({
     <Box>
       <Grid container spacing={3}>
         <Grid item xs={12}>
-          <Breadcrumbs
-            aria-label="breadcrumb"
-          >
-            {breadcrumbs.map((bc, index) =>
-              index < breadcrumbs.length - 1 ? (
-                <Typography
-                  key={bc.id}
-                  color="inherit"
-                  onClick={() => handleClick(bc.id)}
-                  sx={{
-                    cursor: "pointer",
-                  }}
-                >
-                  {bc.name}
-                </Typography>
-              ) : (
-                <Typography key={bc.id} color="text.primary">
-                  {bc.name}
-                </Typography>
-              )
-            )}
-          </Breadcrumbs>
+          {!isLoading && (
+            <Breadcrumbs
+              aria-label="breadcrumb"
+            >
+              {breadcrumbs.map((bc, index) =>
+                index < breadcrumbs.length - 1 ? (
+                  <Typography
+                    key={bc.id}
+                    color="inherit"
+                    onClick={() => handleClick(bc.id)}
+                    sx={{
+                      cursor: "pointer",
+                      textDecoration: "underline",
+                      fontWeight: 600,
+                    }}
+                  >
+                    {bc.name}
+                  </Typography>
+                ) : (
+                  <Typography
+                    key={bc.id}
+                    color="text.primary"
+                    sx={{
+                      fontWeight: 600,
+                    }}
+                  >
+                    {bc.name}
+                  </Typography>
+                )
+              )}
+            </Breadcrumbs>
+          )}
         </Grid>
       </Grid>
     </Box>

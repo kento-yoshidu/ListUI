@@ -3,19 +3,7 @@ import { Box, Checkbox, Table, TableBody, TableCell, TableHead, TableRow } from 
 import { FILE_TYPE } from "@/constants";
 import { Information } from "./Information";
 import { useSearch } from "@/hooks/useSearch";
-
-export type Folder = {
-  id: number;
-  name: string;
-};
-
-export type File = {
-  id: number;
-  title: string;
-  description: string;
-  image_path: string;
-  tags: String[];
-};
+import { File, Folder } from "@/type/type";
 
 export const SearchTableComponent = () => {
   const { data, isLoading } = useSearch();
@@ -120,13 +108,13 @@ export const SearchTableComponent = () => {
           </TableBody>
         </Table>
 
-        {isSelected && (
+        {/* {isSelected && (
           <Information
             currentFolderId={currentPath}
             selectedFile={selectedFile}
             selectedFolder={selectedFolder}
           />
-        )}
+        )} */}
       </Box>
     </Box>
   )

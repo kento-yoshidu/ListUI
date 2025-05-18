@@ -1,13 +1,11 @@
-import { useUpdateFolder } from "@/hooks/useUpdateFolder";
 import { Box, Button, Modal, TextField, Typography } from "@mui/material"
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { File, Folder } from "../Table";
-import { ClassNames } from "@emotion/react";
 import { useUpdatePhoto } from "@/hooks/useUpdatePhoto";
+import type { File } from "@/type/type";
 
 type FormValues = {
-  fileName: string;
+  photoName: string;
   description: string;
 };
 
@@ -27,56 +25,54 @@ type Props = {
   open: boolean;
   onClose: Dispatch<SetStateAction<boolean>>;
   currentPath: number;
-  selectedFile: File;
-  setSelectedFile: Dispatch<SetStateAction<File[]>>;
+  selectedPhoto: File;
+  setSelectedPhoto: Dispatch<SetStateAction<File[]>>;
 }
 
 export const UpdatePhotoModal = ({
   open,
   onClose,
   currentPath,
-  selectedFile,
-  setSelectedFile,
+  selectedPhoto,
+  setSelectedPhoto,
 }: Props) => {
   const { mutate } = useUpdatePhoto({
     currentFolderId: currentPath,
     onSuccess: (res) => {
-      console.log("res = ", res);
-
       const file: File = {
-        id: res.id,
-        title: res.title,
-        description: res.description,
-        image_path: selectedFile.image_path,
-        tags: selectedFile.tags,
+        id: res.data.id,
+        title: res.data.title,
+        description: res.data.description,
+        image_path: selectedPhoto.image_path,
+        tags: selectedPhoto.tags,
       };
 
-      setSelectedFile([file]);
+      setSelectedPhoto([file]);
       onClose(false);
     }
   });
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm<FormValues>({
     defaultValues: {
-      fileName: "",
+      photoName: "",
       description: "",
     },
   });
 
-  // useEffect(() => {
-  //   if (open && selectedFolder) {
-  //     reset({
-  //       folderName: selectedFolder.name,
-  //       description: selectedFolder.description || '',
-  //     });
-  //   }
-  // }, [open, selectedFolder, reset]);
+  useEffect(() => {
+    if (open && selectedPhoto) {
+      reset({
+        photoName: selectedPhoto.title,
+        description: selectedPhoto.description || '',
+      });
+    }
+  }, [open, selectedPhoto, reset]);
 
   const onSubmit = (data: FormValues) => {
     mutate({
-      title: data.fileName,
+      title: data.photoName,
       description: data.description || "",
-      id: selectedFile.id,
+      id: selectedPhoto.id,
     });
   };
 
@@ -90,14 +86,19 @@ export const UpdatePhotoModal = ({
         component="form"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <Typography variant="h6" mb={2}>Update Photo</Typography>
+        <Typography
+          variant="h6"
+          mb={2}
+        >
+          写真を更新する
+        </Typography>
 
         <TextField
           fullWidth
           label="Photo Name"
-          {...register("fileName", { required: "フォルダー名は必須です" })}
-          error={!!errors.fileName}
-          helperText={errors.fileName?.message}
+          {...register("photoName", { required: "フォルダー名は必須です" })}
+          error={!!errors.photoName}
+          helperText={errors.photoName?.message}
           margin="normal"
         />
 
@@ -116,5 +117,3 @@ export const UpdatePhotoModal = ({
     </Modal>
   )
 }
-
-

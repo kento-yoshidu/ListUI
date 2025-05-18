@@ -26,20 +26,29 @@ export const ButtonList = ({
   }
 
   return (
-    <Box>
-      <DeleteIcon
-        onClick={handleClick}
-      />
-      {setIsOpenUpdateFolderModal && (
-        <EditIcon
-          onClick={() => setIsOpenUpdateFolderModal(true)}
-        />
-      )}
+    <Box
+      sx={{
+        display: "flex",
+        gap: 1,
+        alignItems: "center",
+        color: "gray",
+        "& svg": {
+          fontSize: 28,
+          cursor: "pointer",
+          transition: "color 0.2s",
+          "&:hover": {
+            color: "#3f51b5",
+          },
+        },
+      }}
+    >
       {setIsOpenUpdatePhotoModal && (
-        <EditIcon
-          onClick={() => setIsOpenUpdatePhotoModal(true)}
-        />
+        <EditIcon onClick={() => setIsOpenUpdatePhotoModal(true)} />
       )}
+      {setIsOpenUpdateFolderModal && (
+        <EditIcon onClick={() => setIsOpenUpdateFolderModal(true)} />
+      )}
+      <DeleteIcon onClick={handleClick} />
     </Box>
   )
 }

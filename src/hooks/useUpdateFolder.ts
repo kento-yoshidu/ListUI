@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "@/context/SnackBarContext";
-import { Folder } from "@/components/Table";
+import { Folder } from "@/type/type";
 
 type Props = {
   name: string;

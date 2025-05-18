@@ -1,11 +1,8 @@
-import { AuthProvider } from '@/context/AuthProvider';
-import { SnackbarProvider } from '@/context/SnackBarContext';
-import '@/styles/globals.css'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import type { AppProps } from 'next/app'
-import "../styles/globals.css";
-import { CssBaseline, ThemeProvider } from '@mui/material';
-import { theme } from '@/theme';
+import { AuthProvider } from "@/context/AuthProvider";
+import { SnackbarProvider } from "@/context/SnackBarContext";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import "@/styles/globals.css";
+import type { AppProps } from "next/app";
 
 const queryClient = new QueryClient();
 
@@ -18,5 +15,5 @@ export default function App({ Component, pageProps }: AppProps) {
         </QueryClientProvider>
       </AuthProvider>
     </SnackbarProvider>
-  )
-}
+  );
+};

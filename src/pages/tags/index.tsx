@@ -1,7 +1,7 @@
-import { TableComponent } from "@/components/Table";
+import { Tags } from "@/components/Tags";
 import { Wrapper } from "@/components/layout/Wrapper";
 
-const Files = () => {
+const TagsPage = () => {
   return (
     <Wrapper>
       <main
@@ -9,10 +9,10 @@ const Files = () => {
           padding: "30px",
         }}
       >
-        <TableComponent />
+        <Tags />
       </main>
     </Wrapper>
-  )
-}
+  );
+};
 
-export default Files;
+export default TagsPage;
