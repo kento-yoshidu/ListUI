@@ -1,17 +1,18 @@
+import { API_PATH } from "@/constants";
 import { useSnackbar } from "@/context/SnackBarContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 type Props = {
-  title: string;
-  description: string;
   id: number;
+  name: string;
+  description: string;
 };
 
 type PhotoResponse = {
   message: string;
   data: {
     id: number;
-    title: string;
+    name: string;
     description: string;
   };
 };
@@ -29,23 +30,23 @@ export const useUpdatePhoto = ({
 
   return useMutation({
     mutationFn: async ({
-      title,
-      description,
       id,
+      name,
+      description,
     }: Props) => {
       const token = localStorage.getItem("token");
       if (!token) throw new Error("No token");
 
-      const res = await fetch(`${baseUrl}/update-photo`, {
+      const res = await fetch(`${baseUrl}/${API_PATH.UPDATE_PHOTO}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          title,
-          description,
           id,
+          name,
+          description,
         }),
       });
 

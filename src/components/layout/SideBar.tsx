@@ -5,15 +5,15 @@ export const SideBar = () => {
   const links = [
     {
       href: "/files",
-      label: "File Explorer",
+      label: "ファイル一覧",
     },
     {
       href: "/search",
-      label: "Search",
+      label: "検索",
     },
     {
       href: "/tags",
-      label: "Tags",
+      label: "タグ一覧",
     },
   ];
 

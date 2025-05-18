@@ -1,16 +1,16 @@
-import { useState, type Dispatch, type SetStateAction } from "react";
+import { useState } from "react";
 import { Box, Button, Modal, TextField, Typography } from "@mui/material";
-import { useUploadPhoto } from "@/hooks/useUploadPhoto";
+import { useUploadPhoto } from "@/apis/useUploadPhoto";
 import { useForm } from "react-hook-form";
 
 type Props = {
   open: boolean;
-  onClose: Dispatch<SetStateAction<boolean>>;
+  onClose: () => void;
   currentPath: number;
 };
 
 type FormValues = {
-  title: string;
+  name: string;
   description: string;
 };
 
@@ -49,14 +49,14 @@ export const UploadPhotoModal = ({ open, onClose, currentPath }: Props) => {
     uploadPhoto(
       {
         file,
-        title: data.title,
+        name: data.name,
         description: data.description,
       },
       {
         onSuccess: () => {
+          onClose();
           reset();
           setFile(null);
-          onClose(false);
         },
       },
     );
@@ -72,22 +72,22 @@ export const UploadPhotoModal = ({ open, onClose, currentPath }: Props) => {
   };
 
   return (
-    <Modal open={open} onClose={() => onClose(false)}>
+    <Modal open={open} onClose={onClose}>
       <Box sx={style} component="form" onSubmit={handleSubmit(onSubmit)}>
-        <Typography variant="h6" mb={2}>Upload Photo</Typography>
+        <Typography variant="h6" mb={2}>写真をアップロードする</Typography>
 
         <TextField
           fullWidth
-          label="File Name"
-          {...register("title", { required: "File Name is required." })}
-          error={!!errors.title}
-          helperText={errors.title?.message}
+          label="ファイル名"
+          {...register("name", { required: "ファイル名は必須です。" })}
+          error={!!errors.name}
+          helperText={errors.name?.message}
           margin="normal"
         />
 
         <TextField
           fullWidth
-          label="Description"
+          label="説明"
           {...register("description")}
           margin="normal"
         />
@@ -104,7 +104,7 @@ export const UploadPhotoModal = ({ open, onClose, currentPath }: Props) => {
         <Box mt={3} display="flex" justifyContent="flex-end">
           <Button
             onClick={() => {
-              onClose(false);
+              onClose();
               reset();
               setFile(null);
             }}

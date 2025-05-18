@@ -17,7 +17,7 @@ const style = {
 
 type Props = {
   open: boolean;
-  onClose: Dispatch<SetStateAction<boolean>>;
+  onClose: () => void;
   currentPath: number;
   selectedFile: File[];
   setSelectedFile: Dispatch<SetStateAction<File[]>>;
@@ -31,21 +31,23 @@ export const DeletePhotoModal = ({
   setSelectedFile,
 }: Props) => {
   const { mutate } = useDeletePhoto({
+    currentFolderId: currentPath,
     setSelectedFile,
   })
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
     mutate(selectedFile[0].id);
+    onClose();
   }
 
   return (
-    <Modal open={open} onClose={() => onClose(false)}>
+    <Modal open={open} onClose={onClose}>
       <Box sx={style} component="form" onSubmit={handleSubmit}>
         <Typography variant="h6" mb={2}>写真を削除する</Typography>
 
         <Box mt={3} display="flex" justifyContent="flex-end">
-          <Button onClick={() => onClose(false)} sx={{ mr: 1 }}>キャンセル</Button>
+          <Button onClick={onClose} sx={{ mr: 1 }}>キャンセル</Button>
           <Button variant="contained" type="submit">OK</Button>
         </Box>
       </Box>

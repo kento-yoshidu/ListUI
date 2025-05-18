@@ -1,19 +1,17 @@
+import { API_PATH } from "@/constants";
 import { useSnackbar } from "@/context/SnackBarContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
 
 type Props = {
   file: File;
-  title: string;
+  name: string;
   description: string;
 };
 
 export const useUploadPhoto = (
   { currentFolderId }:
-  { currentFolderId: number}
+  { currentFolderId: number }
 ) => {
-  const [uploading, setUploading] = useState(false);
-
   const { showSnackbar } = useSnackbar();
   const queryClient = useQueryClient();
 
@@ -22,14 +20,14 @@ export const useUploadPhoto = (
   return useMutation({
     mutationFn: async ({
       file,
-      title,
+      name,
       description,
     }: Props) => {
       const token = localStorage.getItem("token");
       if (!token) throw new Error("No token");
 
       // 署名付きURLの取得
-      const presignRes = await fetch("http://localhost:8000/generate-presigned-url", {
+      const presignRes = await fetch(`${baseUrl}/generate-presigned-url`, {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -53,7 +51,7 @@ export const useUploadPhoto = (
       if (!uploadRes.ok) throw new Error("Upload failed");
 
       // レコード追加
-      const saveRes = await fetch("http://localhost:8000/register-photo", {
+      const res = await fetch(`${baseUrl}/${API_PATH.UPLOAD_PHOTO}`, {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -61,18 +59,21 @@ export const useUploadPhoto = (
         },
         body: JSON.stringify({
           image_path: public_url,
-          title: title,
+          name: name,
           folder_id: currentFolderId,
           description: description,
         }),
       });
 
-      if (!saveRes.ok) throw new Error("Failed to save photo info to DB");
-
-      showSnackbar("画像のアップロードに成功しました");
-
-      queryClient.invalidateQueries({ queryKey: ['file', currentFolderId] });
-      console.log("file = ", file);
+      return await res.json();
+    },
+    onSuccess: (res) => {
+      queryClient.invalidateQueries({ queryKey: ["file", currentFolderId] });
+      showSnackbar(res.message);
+    },
+    onError: (err: any) => {
+      console.error("アップロードエラー:", err);
+      showSnackbar("画像のアップロードに失敗しました。");
     }
   })
 }

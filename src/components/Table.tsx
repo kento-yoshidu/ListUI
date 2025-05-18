@@ -13,8 +13,8 @@ import { UpdateFolderModal } from "../modal/UpdateFolderModal";
 import { UpdatePhotoModal } from "../modal/UpdatePhotoModal";
 import { NoFiles } from "./Table/Nofiles";
 import { PageTitle } from "./common/PageTitle";
-import type { File, Folder } from "@/type/type";
 import { DeletePhotoModal } from "@/modal/DeletePhotoModal";
+import type { File, Folder } from "@/type/type";
 
 export const TableComponent = () => {
   const [currentPath, setCurrentPath] = useState<number>(1);
@@ -293,6 +293,7 @@ export const TableComponent = () => {
         )}
       </Box>
 
+      {/* フォルダーモーダル */}
       <CreateFolderModal
         open={isOpenCreateFolderModal}
         onClose={setIsOpenCreateFolderModal}
@@ -305,21 +306,22 @@ export const TableComponent = () => {
         selectedFolder={selectedFolder[0]}
         setSelectedFolder={setSelectedFolder}
       />
+      {/* 写真モーダル */}
+      <UploadPhotoModal
+        open={isOpenUploadPhotoModal}
+        onClose={() => setIsOpenUploadPhotoModal(false)}
+        currentPath={currentPath}
+      />
       <UpdatePhotoModal
         open={isOpenUpdatePhotoModal}
-        onClose={setIsOpenUpdatePhotoModal}
+        onClose={() => setIsOpenUpdatePhotoModal(false)}
         currentPath={currentPath}
         selectedPhoto={selectedFile[0]}
         setSelectedPhoto={setSelectedFile}
       />
-      <UploadPhotoModal
-        open={isOpenUploadPhotoModal}
-        onClose={setIsOpenUploadPhotoModal}
-        currentPath={currentPath}
-      />
       <DeletePhotoModal
         open={isOpenDeletePhotoModal}
-        onClose={setIsOpenDeletePhotoModal}
+        onClose={() => setIsOpenDeletePhotoModal(false)}
         currentPath={currentPath}
         selectedFile={selectedFile}
         setSelectedFile={setSelectedFile}

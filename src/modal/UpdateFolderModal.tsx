@@ -90,7 +90,7 @@ export const UpdateFolderModal = ({
 
         <TextField
           fullWidth
-          label="説明 (任意)"
+          label="説明"
           {...register("description")}
           margin="normal"
         />
