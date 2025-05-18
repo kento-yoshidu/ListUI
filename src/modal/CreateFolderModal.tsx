@@ -15,12 +15,12 @@ type FormValues = {
 };
 
 const style = {
-  position: 'absolute' as const,
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
+  position: "absolute" as const,
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: 'background.paper',
+  bgcolor: "background.paper",
   borderRadius: 2,
   boxShadow: 24,
   p: 4,
@@ -36,7 +36,7 @@ export const CreateFolderModal = ({ open, onClose, currentPath }: Props) => {
       name: data.folderName,
       description: data.description || "",
       parent_id: currentPath,
-    })
+    });
   };
 
   return (
@@ -66,5 +66,5 @@ export const CreateFolderModal = ({ open, onClose, currentPath }: Props) => {
         </Box>
       </Box>
     </Modal>
-  )
-}
+  );
+};

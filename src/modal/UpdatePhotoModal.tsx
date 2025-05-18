@@ -1,11 +1,11 @@
-import { Box, Button, Modal, TextField, Typography } from "@mui/material"
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useEffect, type Dispatch, type SetStateAction } from "react";
+import { Box, Button, Modal, TextField, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { useUpdatePhoto } from "@/hooks/useUpdatePhoto";
+import { useUpdatePhoto } from "@/apis/useUpdatePhoto";
 import type { File } from "@/type/type";
 
 type FormValues = {
-  photoName: string;
+  name: string;
   description: string;
 };
 
@@ -23,7 +23,7 @@ const style = {
 
 type Props = {
   open: boolean;
-  onClose: Dispatch<SetStateAction<boolean>>;
+  onClose: () => void;
   currentPath: number;
   selectedPhoto: File;
   setSelectedPhoto: Dispatch<SetStateAction<File[]>>;
@@ -41,20 +41,20 @@ export const UpdatePhotoModal = ({
     onSuccess: (res) => {
       const file: File = {
         id: res.data.id,
-        title: res.data.title,
+        title: res.data.name,
         description: res.data.description,
         image_path: selectedPhoto.image_path,
         tags: selectedPhoto.tags,
       };
 
+      onClose();
       setSelectedPhoto([file]);
-      onClose(false);
-    }
+    },
   });
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm<FormValues>({
     defaultValues: {
-      photoName: "",
+      name: "",
       description: "",
     },
   });
@@ -62,7 +62,7 @@ export const UpdatePhotoModal = ({
   useEffect(() => {
     if (open && selectedPhoto) {
       reset({
-        photoName: selectedPhoto.title,
+        name: selectedPhoto.title,
         description: selectedPhoto.description || '',
       });
     }
@@ -70,7 +70,7 @@ export const UpdatePhotoModal = ({
 
   const onSubmit = (data: FormValues) => {
     mutate({
-      title: data.photoName,
+      name: data.name,
       description: data.description || "",
       id: selectedPhoto.id,
     });
@@ -79,7 +79,7 @@ export const UpdatePhotoModal = ({
   return (
     <Modal
       open={open}
-      onClose={() => onClose(false)}
+      onClose={onClose}
     >
       <Box
         sx={style}
@@ -95,25 +95,30 @@ export const UpdatePhotoModal = ({
 
         <TextField
           fullWidth
-          label="Photo Name"
-          {...register("photoName", { required: "フォルダー名は必須です" })}
-          error={!!errors.photoName}
-          helperText={errors.photoName?.message}
+          label="ファイル名"
+          {...register("name", { required: "ファイル名は必須です" })}
+          error={!!errors.name}
+          helperText={errors.name?.message}
           margin="normal"
         />
 
         <TextField
           fullWidth
-          label="説明 (任意)"
+          label="説明"
           {...register("description")}
           margin="normal"
         />
 
         <Box mt={3} display="flex" justifyContent="flex-end">
-          <Button onClick={() => onClose(false)} sx={{ mr: 1 }}>キャンセル</Button>
+          <Button
+            onClick={onClose}
+            sx={{ mr: 1 }}
+          >
+            キャンセル
+          </Button>
           <Button variant="contained" type="submit">OK</Button>
         </Box>
       </Box>
     </Modal>
-  )
-}
+  );
+};

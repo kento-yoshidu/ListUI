@@ -6,4 +6,6 @@ export enum FILE_TYPE {
 export enum API_PATH {
   FILES = "files",
   SEARCH = "search",
+  UPLOAD_PHOTO = "photos",
+  UPDATE_PHOTO = "photos",
 };

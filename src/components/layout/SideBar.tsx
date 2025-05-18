@@ -1,15 +1,19 @@
-import { List, ListItem, ListItemText, Typography } from "@mui/material"
+import { List, ListItem, ListItemText } from "@mui/material"
 import Link from "next/link";
 
 export const SideBar = () => {
   const links = [
     {
       href: "/files",
-      label: "File Explorer",
+      label: "ファイル一覧",
     },
     {
       href: "/search",
-      label: "Search",
+      label: "検索",
+    },
+    {
+      href: "/tags",
+      label: "タグ一覧",
     },
   ];
 
@@ -32,5 +36,5 @@ export const SideBar = () => {
         ))}
       </List>
     </aside>
-  )
-}
+  );
+};

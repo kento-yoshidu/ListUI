@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import { Box } from "@mui/material"
-import { useDeletePhoto } from "@/hooks/useDeletePhoto";
+import { useDeletePhoto } from "@/apis/useDeletePhoto";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
@@ -9,6 +9,7 @@ type Props = {
   currentFolderId: number;
   setIsOpenUpdateFolderModal?: Dispatch<SetStateAction<boolean>>;
   setIsOpenUpdatePhotoModal?: Dispatch<SetStateAction<boolean>>;
+  setIsOpenDeletePhotoModal?: Dispatch<SetStateAction<boolean>>;
 };
 
 export const ButtonList = ({
@@ -16,13 +17,10 @@ export const ButtonList = ({
   currentFolderId,
   setIsOpenUpdateFolderModal,
   setIsOpenUpdatePhotoModal,
+  setIsOpenDeletePhotoModal,
 }: Props) => {
-  const { mutate } = useDeletePhoto({
-    currentFolderId
-  });
-
   const handleClick = async () => {
-    mutate(photoId);
+    setIsOpenDeletePhotoModal && setIsOpenDeletePhotoModal(true);
   }
 
   return (
