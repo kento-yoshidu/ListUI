@@ -7,12 +7,14 @@ type Props = {
   currentFolderId: number;
   selectedFile: File;
   setIsOpenUpdatePhotoModal: Dispatch<SetStateAction<boolean>>;
-}
+  setIsOpenDeletePhotoModal: Dispatch<SetStateAction<boolean>>;
+};
 
 export const SinglePhoto = ({
   selectedFile,
   currentFolderId,
   setIsOpenUpdatePhotoModal,
+  setIsOpenDeletePhotoModal,
 }: Props) => {
   return (
     <Box
@@ -90,6 +92,7 @@ export const SinglePhoto = ({
         currentFolderId={currentFolderId}
         photoId={selectedFile.id}
         setIsOpenUpdatePhotoModal={setIsOpenUpdatePhotoModal}
+        setIsOpenDeletePhotoModal={setIsOpenDeletePhotoModal}
       />
     </Box>
   )

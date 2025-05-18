@@ -1,7 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "@/context/SnackBarContext";
+import { Dispatch, SetStateAction } from "react";
+import { File } from "@/type/type";
 
-export const useDeletePhoto = ({ currentFolderId }: { currentFolderId: number }) => {
+type Props = {
+  setSelectedFile: Dispatch<SetStateAction<File[]>>;
+};
+
+export const useDeletePhoto = ({ setSelectedFile }: Props) => {
   const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
   const queryClient = useQueryClient();
   const { showSnackbar } = useSnackbar();
@@ -20,12 +26,12 @@ export const useDeletePhoto = ({ currentFolderId }: { currentFolderId: number })
         body: JSON.stringify([id]),
       });
 
+      console.log("res = ", res);
       if (!res.ok) throw new Error(await res.text());
       return res;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['file', currentFolderId] });
-      queryClient.invalidateQueries({ queryKey: ['search'] });
+      setSelectedFile([]);
       showSnackbar("画像削除に成功しました");
     },
     onError: (err: any) => {

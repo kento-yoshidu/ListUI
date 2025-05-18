@@ -1,4 +1,4 @@
-import { List, ListItem, ListItemText, Typography } from "@mui/material"
+import { List, ListItem, ListItemText } from "@mui/material"
 import Link from "next/link";
 
 export const SideBar = () => {
@@ -10,6 +10,10 @@ export const SideBar = () => {
     {
       href: "/search",
       label: "Search",
+    },
+    {
+      href: "/tags",
+      label: "Tags",
     },
   ];
 
@@ -32,5 +36,5 @@ export const SideBar = () => {
         ))}
       </List>
     </aside>
-  )
-}
+  );
+};

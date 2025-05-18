@@ -14,6 +14,7 @@ import { UpdatePhotoModal } from "../modal/UpdatePhotoModal";
 import { NoFiles } from "./Table/Nofiles";
 import { PageTitle } from "./common/PageTitle";
 import type { File, Folder } from "@/type/type";
+import { DeletePhotoModal } from "@/modal/DeletePhotoModal";
 
 export const TableComponent = () => {
   const [currentPath, setCurrentPath] = useState<number>(1);
@@ -25,6 +26,7 @@ export const TableComponent = () => {
   const [isOpenUpdateFolderModal, setIsOpenUpdateFolderModal] = useState(false);
   const [isOpenUpdatePhotoModal, setIsOpenUpdatePhotoModal] = useState(false);
   const [isOpenUploadPhotoModal, setIsOpenUploadPhotoModal] = useState(false);
+  const [isOpenDeletePhotoModal, setIsOpenDeletePhotoModal] = useState(false);
 
   const { data, isLoading } = useGetFiles(currentPath);
 
@@ -286,6 +288,7 @@ export const TableComponent = () => {
             selectedFolder={selectedFolder}
             setIsOpenUpdateFolderModal={setIsOpenUpdateFolderModal}
             setIsOpenUpdatePhotoModal={setIsOpenUpdatePhotoModal}
+            setIsOpenDeletePhotoModal={setIsOpenDeletePhotoModal}
           />
         )}
       </Box>
@@ -313,6 +316,13 @@ export const TableComponent = () => {
         open={isOpenUploadPhotoModal}
         onClose={setIsOpenUploadPhotoModal}
         currentPath={currentPath}
+      />
+      <DeletePhotoModal
+        open={isOpenDeletePhotoModal}
+        onClose={setIsOpenDeletePhotoModal}
+        currentPath={currentPath}
+        selectedFile={selectedFile}
+        setSelectedFile={setSelectedFile}
       />
     </Box>
   )
