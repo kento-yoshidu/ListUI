@@ -1,6 +1,6 @@
+import type { Dispatch, SetStateAction } from "react";
 import { useCreateFolder } from "@/hooks/useCreateFolder";
 import { Box, Button, Modal, TextField, Typography } from "@mui/material"
-import { Dispatch, SetStateAction, useState } from "react";
 import { useForm } from "react-hook-form";
 
 type Props = {
@@ -42,7 +42,7 @@ export const CreateFolderModal = ({ open, onClose, currentPath }: Props) => {
   return (
     <Modal open={open} onClose={() => onClose(false)}>
       <Box sx={style} component="form" onSubmit={handleSubmit(onSubmit)}>
-        <Typography variant="h6" mb={2}>フォルダー作成</Typography>
+        <Typography variant="h6" mb={2}>フォルダーを作成する</Typography>
 
         <TextField
           fullWidth

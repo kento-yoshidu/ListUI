@@ -1,8 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
-import { File } from "../Table";
 import { ButtonList } from "./ButtonList";
-import { ContentPasteOffSharp } from "@mui/icons-material";
 import { Box, Chip, Typography } from "@mui/material";
+import { File } from "@/type/type";
 
 type Props = {
   currentFolderId: number;
@@ -28,7 +27,9 @@ export const SinglePhoto = ({
           fontSize: 18,
           fontWeight: 600,
         }}
-      >{selectedFile.title}</Typography>
+      >
+        {selectedFile.title}
+      </Typography>
 
       <Box
         component="img"
@@ -43,6 +44,7 @@ export const SinglePhoto = ({
       <Box>
         <Typography
           sx={{
+            mb: 1,
             fontSize: 18,
             fontWeight: 600,
           }}

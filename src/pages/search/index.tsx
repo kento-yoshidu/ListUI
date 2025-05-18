@@ -1,5 +1,5 @@
 import { SearchTableComponent } from "@/components/SearchTable";
-import { Wrapper } from "@/components/Wrapper";
+import { Wrapper } from "@/components/layout/Wrapper";
 
 const Search = () => {
   return (

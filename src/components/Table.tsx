@@ -1,33 +1,19 @@
 import { useState } from "react";
 import { useGetFiles } from "@/hooks/useGetFiles";
-import { Box, Checkbox, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { Box, Checkbox, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import { FILE_TYPE } from "@/constants";
 import FolderIcon from "@mui/icons-material/Folder";
 import { BreadCrumb } from "@/components/BreadCrumb";
 import { Information } from "./Information";
-import { CreateFolderModal } from "./modal/CreateFolderModal";
+import { CreateFolderModal } from "../modal/CreateFolderModal";
 import { ButtonList } from "./ButtonList";
-import { UploadPhotoModal } from "./modal/UploadPhotoModal";
+import { UploadPhotoModal } from "../modal/UploadPhotoModal";
 import ImageIcon from '@mui/icons-material/Image';
-import { UpdateFolderModal } from "./modal/UpdateFolderModal";
-import { UpdatePhotoModal } from "./modal/UpdatePhotoModal";
-
-export type Folder = {
-  id: number;
-  name: string;
-  description: string;
-};
-
-export type File = {
-  id: number;
-  title: string;
-  description: string;
-  image_path: string;
-  tags: {
-    id: number;
-    tag: string;
-  }[],
-};
+import { UpdateFolderModal } from "../modal/UpdateFolderModal";
+import { UpdatePhotoModal } from "../modal/UpdatePhotoModal";
+import { NoFiles } from "./Table/Nofiles";
+import { PageTitle } from "./common/PageTitle";
+import type { File, Folder } from "@/type/type";
 
 export const TableComponent = () => {
   const [currentPath, setCurrentPath] = useState<number>(1);
@@ -76,10 +62,6 @@ export const TableComponent = () => {
 
   const isSelected = selectedFile.length !== 0 || selectedFolder.length !== 0;
 
-  if (isLoading) {
-    return <p>loading</p>;
-  }
-
   return (
     <Box
       sx={{
@@ -89,6 +71,8 @@ export const TableComponent = () => {
         gap: 2,
       }}
     >
+      <PageTitle title="ファイル一覧" />
+
       <Box
         sx={{
           display: "flex",
@@ -96,10 +80,11 @@ export const TableComponent = () => {
         }}
       >
         <BreadCrumb
-          breadcrumbs={data.breadcrumbs}
+          breadcrumbs={data?.breadcrumbs}
           setCurrentPath={setCurrentPath}
           setSelectedFolder={setSelectedFolder}
           setSelectedFile={setSelectedFile}
+          isLoading={isLoading}
         />
 
         <ButtonList
@@ -131,141 +116,166 @@ export const TableComponent = () => {
               backgroundColor: "rgb(187, 196, 200)",
             }}
           >
-            <TableCell sx={{ padding: "4px", width: "54px" }} />
-            <TableCell sx={{ padding: "4px", color: "rgb(64, 90, 102)", fontWeight: 600 }}>title</TableCell>
-            <TableCell sx={{ padding: "4px", color: "rgb(64, 90, 102)", fontWeight: 600 }}>description</TableCell>
-            <TableCell sx={{ padding: "4px", color: "rgb(64, 90, 102)", fontWeight: 600 }}>Uploaded At</TableCell>
+            <TableRow>
+              <TableCell sx={{ padding: "4px", width: "54px" }} />
+              <TableCell sx={{ padding: "4px", color: "rgb(64, 90, 102)", fontWeight: 600 }}>title</TableCell>
+              <TableCell sx={{ padding: "4px", color: "rgb(64, 90, 102)", fontWeight: 600 }}>description</TableCell>
+              <TableCell sx={{ padding: "4px", color: "rgb(64, 90, 102)", fontWeight: 600 }}>Uploaded At</TableCell>
+            </TableRow>
           </TableHead>
 
           <TableBody>
-            {data.child_folders.map((folder: any) => (
-              <TableRow
-                key={folder.id}
-                onDoubleClick={() => handleDoubleClick(folder.id)}
-                hover
-                sx={{
-                  cursor: "pointer",
-                  fontWeight: 900,
-                  p: 0,
-                }}
-              >
+            {isLoading ? (
+              <TableRow>
                 <TableCell
+                  colSpan={4}
+                  align="center"
+                  sx={{ height: "300px" }}
+                >
+                  <Typography variant="body1" color="text.secondary">
+                    Loading...
+                  </Typography>
+                </TableCell>
+              </TableRow>
+            ) : data.child_folders.length === 0 && data.photos.length === 0 ? (
+              <>
+                <NoFiles
+                  setIsOpenCreateFolderModal={setIsOpenCreateFolderModal}
+                  setIsOpenUploadPhotoModal={setIsOpenUploadPhotoModal}
+                />
+              </>
+            ) : (
+              <>
+                {data.child_folders.map((folder: any) => (
+                <TableRow
+                  key={folder.id}
+                  onDoubleClick={() => handleDoubleClick(folder.id)}
+                  hover
                   sx={{
+                    cursor: "pointer",
+                    fontWeight: 900,
                     p: 0,
                   }}
                 >
-                  <Box
+                  <TableCell
                     sx={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
                       p: 0,
                     }}
                   >
-                    <Checkbox
-                      checked={selectedFolder.some((f) => f.id === folder.id)}
-                      onClick={() => handleCheckboxChange(folder, FILE_TYPE.Folder)}
-                    />
-                  </Box>
-                </TableCell>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        p: 0,
+                      }}
+                    >
+                      <Checkbox
+                        checked={selectedFolder.some((f) => f.id === folder.id)}
+                        onClick={() => handleCheckboxChange(folder, FILE_TYPE.Folder)}
+                      />
+                    </Box>
+                  </TableCell>
 
-                <TableCell
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    height: "56px",
-                    gap: 1,
-                    fontWeight: 600,
-                    p: 0,
-                  }}
-                  onClick={() => {
-                    setSelectedFolder([folder])
-                    setSelectedFile([])
-                  }}
-                >
-                  <FolderIcon
-                    sx={{
-                      color: "orange",
-                      fontSize: 28,
-                    }}
-                  />
-                  {`${folder.name} (id=${folder.id})`}
-                </TableCell>
-                <TableCell
-                  sx={{
-                    padding: "0",
-                    fontWeight: 600,
-                  }}
-                >
-                  {folder.description}
-                </TableCell>
-                <TableCell sx={{ p: 0 }} />
-              </TableRow>
-            ))}
-
-            {data.photos.map((photo: any) => (
-              <TableRow
-                key={`photo-${photo.id}`}
-                hover
-                sx={{
-                  cursor: "pointer",
-                }}
-              >
-                <TableCell sx={{ p: 0 }}>
-                  <Box
+                  <TableCell
                     sx={{
                       display: "flex",
-                      justifyContent: 'center',
-                      alignItems: 'center',
+                      alignItems: "center",
+                      height: "56px",
+                      gap: 1,
+                      fontWeight: 600,
+                      p: 0,
+                    }}
+                    onClick={() => {
+                      setSelectedFolder([folder])
+                      setSelectedFile([])
                     }}
                   >
-                    <Checkbox
-                      checked={selectedFile.some((f) => f.id === photo.id)}
-                      onClick={() => handleCheckboxChange(photo, FILE_TYPE.File)}
+                    <FolderIcon
+                      sx={{
+                        color: "orange",
+                        fontSize: 28,
+                      }}
                     />
-                  </Box>
-                </TableCell>
-
-                <TableCell
-                  onClick={() => {
-                    setSelectedFolder([])
-                    setSelectedFile([photo])
-                  }}
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 1,
-                    fontWeight: 600,
-                    p: 0,
-                    height: "56px",
-                  }}
-                >
-                  <ImageIcon
+                    {`${folder.name} (id=${folder.id})`}
+                  </TableCell>
+                  <TableCell
                     sx={{
-                      fontSize: 28,
-                      color: "#1976d2",
+                      padding: "0",
+                      fontWeight: 600,
                     }}
-                  />
-                  {`${photo.title} (id=${photo.id})`}
-                </TableCell>
-                <TableCell
+                  >
+                    {folder.description}
+                  </TableCell>
+                  <TableCell sx={{ p: 0 }} />
+                </TableRow>
+              ))}
+
+              {data.photos.map((photo: any) => (
+                <TableRow
+                  key={`photo-${photo.id}`}
+                  hover
                   sx={{
-                    p: 0,
-                    fontWeight: 600,
+                    cursor: "pointer",
                   }}
                 >
-                  {photo.description}
-                </TableCell>
-                <TableCell
-                  sx={{
-                    p: 0,
-                    fontWeight: 600,
-                  }}
-                >
-                  {photo.uploaded_at}
-                </TableCell>
-              </TableRow>
-            ))}
+                  <TableCell sx={{ p: 0 }}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <Checkbox
+                        checked={selectedFile.some((f) => f.id === photo.id)}
+                        onClick={() => handleCheckboxChange(photo, FILE_TYPE.File)}
+                      />
+                    </Box>
+                  </TableCell>
+
+                  <TableCell
+                    onClick={() => {
+                      setSelectedFolder([])
+                      setSelectedFile([photo])
+                    }}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1,
+                      fontWeight: 600,
+                      p: 0,
+                      height: "56px",
+                    }}
+                  >
+                    <ImageIcon
+                      sx={{
+                        fontSize: 28,
+                        color: "#1976d2",
+                      }}
+                    />
+                    {`${photo.title} (id=${photo.id})`}
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      p: 0,
+                      fontWeight: 600,
+                    }}
+                  >
+                    {photo.description}
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      p: 0,
+                      fontWeight: 600,
+                    }}
+                  >
+                    {photo.uploaded_at}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </>
+            )}
           </TableBody>
         </Table>
 
@@ -296,8 +306,8 @@ export const TableComponent = () => {
         open={isOpenUpdatePhotoModal}
         onClose={setIsOpenUpdatePhotoModal}
         currentPath={currentPath}
-        selectedFile={selectedFile[0]}
-        setSelectedFile={setSelectedFile}
+        selectedPhoto={selectedFile[0]}
+        setSelectedPhoto={setSelectedFile}
       />
       <UploadPhotoModal
         open={isOpenUploadPhotoModal}

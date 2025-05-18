@@ -1,4 +1,3 @@
-import { File } from "@/components/Table";
 import { useSnackbar } from "@/context/SnackBarContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -8,12 +7,21 @@ type Props = {
   id: number;
 };
 
+type PhotoResponse = {
+  message: string;
+  data: {
+    id: number;
+    title: string;
+    description: string;
+  };
+};
+
 export const useUpdatePhoto = ({
   currentFolderId,
   onSuccess,
 }: {
   currentFolderId: number;
-  onSuccess: (updated: File) => void;
+  onSuccess: (updated: PhotoResponse) => void;
 }) => {
   const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
   const queryClient = useQueryClient();
@@ -25,7 +33,6 @@ export const useUpdatePhoto = ({
       description,
       id,
     }: Props) => {
-      console.log("fetch");
       const token = localStorage.getItem("token");
       if (!token) throw new Error("No token");
 

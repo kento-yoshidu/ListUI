@@ -1,5 +1,6 @@
-import { Box, Button } from "@mui/material"
+import { Box } from "@mui/material"
 import { Dispatch, SetStateAction } from "react"
+import { MyButton as Button } from "./common/MyButton"
 
 type Props = {
   setIsOpenCreateFolderModal: Dispatch<SetStateAction<boolean>>;
@@ -10,14 +11,6 @@ export const ButtonList = ({
   setIsOpenCreateFolderModal,
   setIsOpenUploadPhotoModal,
 }: Props) => {
-  const handleCreateFolderClick = () => {
-    setIsOpenCreateFolderModal(true);
-  };
-
-  const handleUploadPhotoClick = () => {
-    setIsOpenUploadPhotoModal(true);
-  };
-
   return (
     <Box
       sx={{
@@ -27,20 +20,14 @@ export const ButtonList = ({
       }}
     >
       <Button
-        variant="outlined"
-        onClick={handleCreateFolderClick}
-        sx={{ textTransform: "none" }}
-      >
-        Create Folder
-      </Button>
+        text="Create Folder"
+        handleClick={setIsOpenCreateFolderModal}
+      />
 
       <Button
-        variant="outlined"
-        onClick={handleUploadPhotoClick}
-        sx={{ textTransform: "none" }}
-      >
-        Upload Photo
-      </Button>
+        text="Upload Photo"
+        handleClick={setIsOpenUploadPhotoModal}
+      />
     </Box>
   )
 }

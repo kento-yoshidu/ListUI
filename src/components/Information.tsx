@@ -1,8 +1,8 @@
 import { Dispatch, SetStateAction } from "react";
 import { Box } from "@mui/material";
-import { File, Folder } from "./Table";
 import { SinglePhoto } from "./Information/SinglePhoto";
 import { SingleFolder } from "./Information/SingleFolder";
+import { File, Folder } from "@/type/type";
 
 type Props = {
   currentFolderId: number;
@@ -42,9 +42,9 @@ export const Information = ({
     <Box
       sx={{
         p: 3,
-        borderLeft: "1px solid #444",
-        maxHeight: "550px",
-        overflowY: "scroll",
+        borderLeft: "1px solid #ccc",
+        height: "550px",
+        overflowY: "auto",
       }}
     >
       {Component}
