@@ -1,4 +1,4 @@
-import { API_PATH } from "@/constants";
+import { API_ENDPOINTS, API_PATH } from "@/constants";
 import { useSnackbar } from "@/context/SnackBarContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -37,8 +37,10 @@ export const useUpdatePhoto = ({
       const token = localStorage.getItem("token");
       if (!token) throw new Error("No token");
 
-      const res = await fetch(`${baseUrl}/${API_PATH.UPDATE_PHOTO}`, {
-        method: "PUT",
+      const { path, method } = API_ENDPOINTS.UPDATE_PHOTO;
+
+      const res = await fetch(`${baseUrl}/${path}`, {
+        method: method,
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",

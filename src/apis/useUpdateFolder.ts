@@ -1,13 +1,21 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "@/context/SnackBarContext";
+import { Folder } from "@/type/type";
+import { API_ENDPOINTS } from "@/constants";
 
 type Props = {
   name: string;
   description: string;
-  parent_id: number;
+  folder_id: number;
 };
 
-export const useCreateFolder = ({ currentFolderId }: { currentFolderId: number}) => {
+export const useUpdateFolder = ({
+  currentFolderId,
+  onSuccess,
+}: {
+  currentFolderId: number;
+  onSuccess: (updated: Folder) => void;
+}) => {
   const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
   const queryClient = useQueryClient();
   const { showSnackbar } = useSnackbar();
@@ -16,13 +24,15 @@ export const useCreateFolder = ({ currentFolderId }: { currentFolderId: number})
     mutationFn: async ({
       name,
       description,
-      parent_id,
+      folder_id,
     }: Props) => {
       const token = localStorage.getItem("token");
       if (!token) throw new Error("No token");
 
-      await fetch(`${baseUrl}/create-folder`, {
-        method: "POST",
+      const { path, method } = API_ENDPOINTS.UPDATE_FOLDER;
+
+      const res = await fetch(`${baseUrl}/${path}`, {
+        method: method,
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -30,13 +40,16 @@ export const useCreateFolder = ({ currentFolderId }: { currentFolderId: number})
         body: JSON.stringify({
           name,
           description,
-          parent_id,
+          folder_id,
         }),
       });
+
+      return await res.json();
     },
-    onSuccess: () => {
+    onSuccess: (res) => {
       queryClient.invalidateQueries({ queryKey: ["file", currentFolderId] });
-      showSnackbar("フォルダーを作成しました");
+      showSnackbar(res.message);
+      onSuccess(res);
     },
     onError: (err: any) => {
       console.error("削除エラー:", err);
@@ -44,3 +57,4 @@ export const useCreateFolder = ({ currentFolderId }: { currentFolderId: number})
     },
   });
 };
+

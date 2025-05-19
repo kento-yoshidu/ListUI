@@ -1,6 +1,7 @@
 import type { Dispatch, SetStateAction } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "@/context/SnackBarContext";
+import { API_ENDPOINTS } from "@/constants";
 import type { File } from "@/type/type";
 
 type Props = {
@@ -21,8 +22,10 @@ export const useDeletePhoto = ({
       const token = localStorage.getItem("token");
       if (!token) throw new Error("No token");
 
-      const res = await fetch(`${baseUrl}/delete-photo`, {
-        method: "DELETE",
+      const { path, method } = API_ENDPOINTS.DELETE_PHOTO;
+
+      const res = await fetch(`${baseUrl}/${path}`, {
+        method,
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",

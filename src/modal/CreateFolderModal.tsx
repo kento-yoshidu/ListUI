@@ -1,5 +1,5 @@
 import type { Dispatch, SetStateAction } from "react";
-import { useCreateFolder } from "@/hooks/useCreateFolder";
+import { useCreateFolder } from "@/apis/useCreateFolder";
 import { Box, Button, Modal, TextField, Typography } from "@mui/material"
 import { useForm } from "react-hook-form";
 

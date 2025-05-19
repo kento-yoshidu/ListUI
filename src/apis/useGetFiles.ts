@@ -1,19 +1,24 @@
+import { API_ENDPOINTS } from "@/constants";
 import { useQuery } from "@tanstack/react-query";
+
+const redirectToSignin = () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("rootFolder");
+  window.location.href = "/signin";
+};
 
 const fetchData = async (id: number) => {
   const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
-
-  const url = `${baseUrl}/files/${id}`;
-
   const token = localStorage.getItem("token");
+  const { path, method } = API_ENDPOINTS.GET_FILES;
 
   if (!token || token.trim() === "") {
     redirectToSignin();
     throw new Error("No JWT token found in localStorage");
   }
 
-  const res = await fetch(url, {
-    method: "GET",
+  const res = await fetch(`${baseUrl}/${path}/${id}`, {
+    method,
     headers: {
       "Authorization": `Bearer ${token}`,
       "Content-Type": "application/json",
@@ -32,15 +37,9 @@ const fetchData = async (id: number) => {
   return res.json();
 };
 
-const redirectToSignin = () => {
-  localStorage.removeItem("token");
-  localStorage.removeItem("rootFolder");
-  window.location.href = "/signin";
-};
-
 export const useGetFiles = (id: number) => {
   return useQuery({
-    queryKey: ['file', id],
+    queryKey: ["file", id],
     queryFn: () => fetchData(id),
   });
 };

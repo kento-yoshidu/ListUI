@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useGetFiles } from "@/hooks/useGetFiles";
+import { useGetFiles } from "@/apis/useGetFiles";
 import { Box, Checkbox, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import { FILE_TYPE } from "@/constants";
 import FolderIcon from "@mui/icons-material/Folder";

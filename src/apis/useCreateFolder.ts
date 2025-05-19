@@ -1,20 +1,14 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "@/context/SnackBarContext";
-import { Folder } from "@/type/type";
+import { API_ENDPOINTS, API_PATH } from "@/constants";
 
 type Props = {
   name: string;
   description: string;
-  folder_id: number;
+  parent_id: number;
 };
 
-export const useUpdateFolder = ({
-  currentFolderId,
-  onSuccess,
-}: {
-  currentFolderId: number;
-  onSuccess: (updated: Folder) => void;
-}) => {
+export const useCreateFolder = ({ currentFolderId }: { currentFolderId: number}) => {
   const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
   const queryClient = useQueryClient();
   const { showSnackbar } = useSnackbar();
@@ -23,13 +17,15 @@ export const useUpdateFolder = ({
     mutationFn: async ({
       name,
       description,
-      folder_id,
+      parent_id,
     }: Props) => {
       const token = localStorage.getItem("token");
       if (!token) throw new Error("No token");
 
-      const res = await fetch(`${baseUrl}/update-folder`, {
-        method: "PATCH",
+      const { path, method } = API_ENDPOINTS.CREATE_FOLDER;
+
+      await fetch(`${baseUrl}/${path}`, {
+        method: method,
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -37,16 +33,13 @@ export const useUpdateFolder = ({
         body: JSON.stringify({
           name,
           description,
-          folder_id,
+          parent_id,
         }),
       });
-
-      return await res.json();
     },
-    onSuccess: (res) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["file", currentFolderId] });
-      showSnackbar(res.message);
-      onSuccess(res);
+      showSnackbar("フォルダーを作成しました");
     },
     onError: (err: any) => {
       console.error("削除エラー:", err);
@@ -54,4 +47,3 @@ export const useUpdateFolder = ({
     },
   });
 };
-
