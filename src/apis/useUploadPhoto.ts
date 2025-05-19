@@ -1,4 +1,4 @@
-import { API_PATH } from "@/constants";
+import { API_ENDPOINTS, API_PATH } from "@/constants";
 import { useSnackbar } from "@/context/SnackBarContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -12,10 +12,9 @@ export const useUploadPhoto = (
   { currentFolderId }:
   { currentFolderId: number }
 ) => {
+  const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
   const { showSnackbar } = useSnackbar();
   const queryClient = useQueryClient();
-
-  const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
 
   return useMutation({
     mutationFn: async ({
@@ -50,9 +49,11 @@ export const useUploadPhoto = (
 
       if (!uploadRes.ok) throw new Error("Upload failed");
 
+      const { path, method } = API_ENDPOINTS.UPLOAD_PHOTO;
+
       // レコード追加
-      const res = await fetch(`${baseUrl}/${API_PATH.UPLOAD_PHOTO}`, {
-        method: "POST",
+      const res = await fetch(`${baseUrl}/${path}`, {
+        method: method,
         headers: {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json",

@@ -1,6 +1,6 @@
 import { useEffect, type Dispatch, type SetStateAction } from "react";
 import { Box, Button, Modal, TextField, Typography } from "@mui/material";
-import { useUpdateFolder } from "@/hooks/useUpdateFolder";
+import { useUpdateFolder } from "@/apis/useUpdateFolder";
 import { useForm } from "react-hook-form";
 import type { Folder } from "@/type/type";
 
