@@ -18,7 +18,7 @@ export const useDeletePhoto = ({
   const { showSnackbar } = useSnackbar();
 
   return useMutation({
-    mutationFn: async (id: number) => {
+    mutationFn: async (photoIds: number[]) => {
       const token = localStorage.getItem("token");
       if (!token) throw new Error("No token");
 
@@ -30,7 +30,9 @@ export const useDeletePhoto = ({
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify([id]),
+        body: JSON.stringify({
+          ids: photoIds,
+        }),
       });
 
       return await res.json();

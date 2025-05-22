@@ -1,7 +1,7 @@
-import { Dispatch, SetStateAction } from "react";
+import type { Dispatch, SetStateAction } from "react";
 import { ButtonList } from "./ButtonList";
 import { Box, Typography } from "@mui/material";
-import { Folder } from "@/type/type";
+import type { Folder } from "@/type/type";
 
 type Props = {
   selectedFolder: Folder;
@@ -47,6 +47,23 @@ export const SingleFolder = ({
           }}
         >
           {selectedFolder.description}
+        </Typography>
+      </Box>
+
+      <Box
+        sx={{
+          display: "flex",
+          gap: 1,
+          fontSize: 16,
+        }}
+      >
+        <Typography
+          sx={{ fontWeight: 600 }}
+        >
+          写真数:
+        </Typography>
+        <Typography>
+          {selectedFolder.total_photo_count}
         </Typography>
       </Box>
       <ButtonList

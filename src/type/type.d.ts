@@ -9,6 +9,7 @@ export type Folder = {
   id: number;
   name: string;
   description: string;
+  total_photo_count: number;
 };
 
 export type File = {

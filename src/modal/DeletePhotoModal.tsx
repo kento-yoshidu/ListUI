@@ -35,9 +35,13 @@ export const DeletePhotoModal = ({
     setSelectedFile,
   })
 
+  const photoIds = selectedFile.map((file) => {
+    return file.id;
+  });
+
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    mutate(selectedFile[0].id);
+    mutate(photoIds);
     onClose();
   }
 
