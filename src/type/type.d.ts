@@ -20,4 +20,5 @@ export type File = {
     id: number;
     tag: string;
   }[],
+  uploaded_at: string;
 };
