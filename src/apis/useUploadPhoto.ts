@@ -1,4 +1,4 @@
-import { API_ENDPOINTS, API_PATH } from "@/constants";
+import { API_ENDPOINTS } from "@/constants";
 import { useSnackbar } from "@/context/SnackBarContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 

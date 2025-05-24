@@ -1,8 +1,8 @@
-import { Dispatch, SetStateAction } from "react";
+import type { Dispatch, SetStateAction } from "react";
 import { Box } from "@mui/material";
-import { SinglePhoto } from "./Information/SinglePhoto";
-import { SingleFolder } from "./Information/SingleFolder";
-import { File, Folder } from "@/type/type";
+import { SinglePhoto } from "@/components/Information/SinglePhoto";
+import { SingleFolder } from "@/components/Information/SingleFolder";
+import type { File, Folder } from "@/type/type";
 
 type Props = {
   currentFolderId: number;
@@ -11,6 +11,7 @@ type Props = {
   setIsOpenUpdateFolderModal: Dispatch<SetStateAction<boolean>>;
   setIsOpenUpdatePhotoModal: Dispatch<SetStateAction<boolean>>;
   setIsOpenDeletePhotoModal: Dispatch<SetStateAction<boolean>>;
+  setIsOpenDeleteFolderModal: Dispatch<SetStateAction<boolean>>;
 }
 
 export const Information = ({
@@ -20,6 +21,7 @@ export const Information = ({
   setIsOpenUpdateFolderModal,
   setIsOpenUpdatePhotoModal,
   setIsOpenDeletePhotoModal,
+  setIsOpenDeleteFolderModal,
 }: Props) => {
   let Component;
 
@@ -36,6 +38,7 @@ export const Information = ({
       <SingleFolder
         selectedFolder={selectedFolder[0]}
         setIsOpenUpdateFolderModal={setIsOpenUpdateFolderModal}
+        setIsOpenDeleteFolderModal={setIsOpenDeleteFolderModal}
       />;
   } else {
     Component = <p>info</p>;

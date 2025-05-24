@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { Box, Checkbox, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { FILE_TYPE } from "@/constants";
-import { Information } from "./Information";
 import { useSearch } from "@/hooks/useSearch";
-import { File, Folder } from "@/type/type";
+import type { File, Folder } from "@/type/type";
 
 export const SearchTableComponent = () => {
   const { data, isLoading } = useSearch();
@@ -97,7 +96,7 @@ export const SearchTableComponent = () => {
                     }}
                   >
                     🖼️
-                    {`${photo.title} (${photo.id})`}
+                    {`${photo.name} (${photo.id})`}
                   </TableCell>
                   {/* Todo: クリックしたらContext更新してフォルダー遷移 */}
                   <TableCell>{photo.description}</TableCell>

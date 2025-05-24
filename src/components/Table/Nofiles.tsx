@@ -1,6 +1,6 @@
+import type { Dispatch, SetStateAction } from "react";
 import { Box, TableCell, TableRow, Typography } from "@mui/material"
-import { MyButton as Button } from "../common/MyButton"
-import { Dispatch, SetStateAction } from "react";
+import { MyButton as Button } from "@/components/common/MyButton"
 
 type Props = {
   setIsOpenCreateFolderModal: Dispatch<SetStateAction<boolean>>;

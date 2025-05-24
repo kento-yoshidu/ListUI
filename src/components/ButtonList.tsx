@@ -1,5 +1,5 @@
+import type { Dispatch, SetStateAction } from "react"
 import { Box } from "@mui/material"
-import { Dispatch, SetStateAction } from "react"
 import { MyButton as Button } from "./common/MyButton"
 
 type Props = {

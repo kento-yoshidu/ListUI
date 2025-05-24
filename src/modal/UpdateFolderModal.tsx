@@ -40,9 +40,10 @@ export const UpdateFolderModal = ({
     currentFolderId: currentPath,
     onSuccess: (res) => {
       const folder: Folder = {
-        id: res.id,
+        id: selectedFolder.id,
         name: res.name,
         description: res.description,
+        total_photo_count: selectedFolder.total_photo_count,
       };
 
       setSelectedFolder([folder]);

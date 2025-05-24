@@ -1,6 +1,6 @@
 import type { Dispatch, SetStateAction } from "react";
-import { Box, Breadcrumbs, Grid, Grid2, Typography } from "@mui/material";
-import { File, Folder } from "@/type/type";
+import { Box, Breadcrumbs, Grid, Typography } from "@mui/material";
+import type { File, Folder } from "@/type/type";
 
 type BreadCrumb = {
   id: number;

@@ -41,7 +41,7 @@ export const UpdatePhotoModal = ({
     onSuccess: (res) => {
       const file: File = {
         id: res.data.id,
-        title: res.data.name,
+        name: res.data.name,
         description: res.data.description,
         image_path: selectedPhoto.image_path,
         tags: selectedPhoto.tags,
@@ -62,7 +62,7 @@ export const UpdatePhotoModal = ({
   useEffect(() => {
     if (open && selectedPhoto) {
       reset({
-        name: selectedPhoto.title,
+        name: selectedPhoto.name,
         description: selectedPhoto.description || '',
       });
     }
