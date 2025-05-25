@@ -1,7 +1,7 @@
-import { Dispatch, SetStateAction } from "react";
+import type { Dispatch, SetStateAction } from "react";
 import { ButtonList } from "./ButtonList";
 import { Box, Chip, Typography } from "@mui/material";
-import { File } from "@/type/type";
+import type { File } from "@/type/type";
 
 type Props = {
   currentFolderId: number;
@@ -30,7 +30,7 @@ export const SinglePhoto = ({
           fontWeight: 600,
         }}
       >
-        {selectedFile.title}
+        {selectedFile.name}
       </Typography>
 
       <Box

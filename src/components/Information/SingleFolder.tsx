@@ -6,11 +6,13 @@ import type { Folder } from "@/type/type";
 type Props = {
   selectedFolder: Folder;
   setIsOpenUpdateFolderModal: Dispatch<SetStateAction<boolean>>;
+  setIsOpenDeleteFolderModal: Dispatch<SetStateAction<boolean>>;
 }
 
 export const SingleFolder = ({
   selectedFolder,
   setIsOpenUpdateFolderModal,
+  setIsOpenDeleteFolderModal,
 }: Props) => {
   return (
     <Box
@@ -70,8 +72,8 @@ export const SingleFolder = ({
         currentFolderId={selectedFolder.id}
         photoId={selectedFolder.id}
         setIsOpenUpdateFolderModal={setIsOpenUpdateFolderModal}
+        setIsOpenDeleteFolderModal={setIsOpenDeleteFolderModal}
       />
     </Box>
   )
 }
-

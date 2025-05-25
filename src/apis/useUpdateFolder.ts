@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "@/context/SnackBarContext";
-import { Folder } from "@/type/type";
 import { API_ENDPOINTS } from "@/constants";
+import type { Folder } from "@/type/type";
 
 type Props = {
   name: string;
@@ -9,12 +9,21 @@ type Props = {
   folder_id: number;
 };
 
+type FolderUpdateResponse = {
+  message: string;
+  data: {
+    id: number;
+    name: string;
+    description: string;
+  };
+};
+
 export const useUpdateFolder = ({
   currentFolderId,
   onSuccess,
 }: {
   currentFolderId: number;
-  onSuccess: (updated: Folder) => void;
+  onSuccess: (updated: FolderUpdateResponse) => void;
 }) => {
   const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
   const queryClient = useQueryClient();
@@ -53,7 +62,6 @@ export const useUpdateFolder = ({
     },
     onError: (err: any) => {
       console.error("削除エラー:", err);
-      showSnackbar("画像削除に失敗しました");
     },
   });
 };

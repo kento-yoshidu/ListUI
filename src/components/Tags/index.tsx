@@ -1,6 +1,6 @@
 import { useGetTags } from "@/apis/useGetTags"
-import { Box, List, ListItem, Typography } from "@mui/material";
-import { PageTitle } from "../common/PageTitle";
+import { Box, List, ListItem } from "@mui/material";
+import { PageTitle } from "@/components/common/PageTitle";
 
 export const Tags = () => {
   const { data, isLoading } = useGetTags();

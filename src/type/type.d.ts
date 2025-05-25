@@ -14,7 +14,7 @@ export type Folder = {
 
 export type File = {
   id: number;
-  title: string;
+  name: string;
   description: string;
   image_path: string;
   tags: {

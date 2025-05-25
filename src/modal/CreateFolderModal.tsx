@@ -1,29 +1,17 @@
-import type { Dispatch, SetStateAction } from "react";
-import { useCreateFolder } from "@/apis/useCreateFolder";
-import { Box, Button, Modal, TextField, Typography } from "@mui/material"
 import { useForm } from "react-hook-form";
+import { useCreateFolder } from "@/apis/useCreateFolder";
+import { Modal, TextField } from "@mui/material"
+import { ModalInner } from "@/modal/ModalInner";
 
 type Props = {
   open: boolean;
-  onClose: Dispatch<SetStateAction<boolean>>;
+  onClose: () => void;
   currentPath: number;
 }
 
 type FormValues = {
   folderName: string;
   description: string;
-};
-
-const style = {
-  position: "absolute" as const,
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  borderRadius: 2,
-  boxShadow: 24,
-  p: 4,
 };
 
 export const CreateFolderModal = ({ open, onClose, currentPath }: Props) => {
@@ -37,13 +25,17 @@ export const CreateFolderModal = ({ open, onClose, currentPath }: Props) => {
       description: data.description || "",
       parent_id: currentPath,
     });
+    onClose();
+    reset();
   };
 
   return (
-    <Modal open={open} onClose={() => onClose(false)}>
-      <Box sx={style} component="form" onSubmit={handleSubmit(onSubmit)}>
-        <Typography variant="h6" mb={2}>フォルダーを作成する</Typography>
-
+    <Modal open={open} onClose={onClose}>
+      <ModalInner
+        modalTitle="フォルダーを作成する"
+        onSubmit={handleSubmit(onSubmit)}
+        onClose={onClose}
+      >
         <TextField
           fullWidth
           label="フォルダー名"
@@ -60,11 +52,7 @@ export const CreateFolderModal = ({ open, onClose, currentPath }: Props) => {
           margin="normal"
         />
 
-        <Box mt={3} display="flex" justifyContent="flex-end">
-          <Button onClick={() => onClose(false)} sx={{ mr: 1 }}>キャンセル</Button>
-          <Button variant="contained" type="submit">OK</Button>
-        </Box>
-      </Box>
+      </ModalInner>
     </Modal>
   );
 };

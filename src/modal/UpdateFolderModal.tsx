@@ -1,7 +1,8 @@
 import { useEffect, type Dispatch, type SetStateAction } from "react";
-import { Box, Button, Modal, TextField, Typography } from "@mui/material";
+import { Modal, TextField } from "@mui/material";
 import { useUpdateFolder } from "@/apis/useUpdateFolder";
 import { useForm } from "react-hook-form";
+import { ModalInner } from "./ModalInner";
 import type { Folder } from "@/type/type";
 
 type FormValues = {
@@ -9,21 +10,9 @@ type FormValues = {
   description: string;
 };
 
-const style = {
-  position: 'absolute' as const,
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  borderRadius: 2,
-  boxShadow: 24,
-  p: 4,
-};
-
 type Props = {
   open: boolean;
-  onClose: Dispatch<SetStateAction<boolean>>;
+  onClose: () => void;
   currentPath: number;
   selectedFolder: Folder;
   setSelectedFolder: Dispatch<SetStateAction<Folder[]>>;
@@ -38,15 +27,16 @@ export const UpdateFolderModal = ({
 }: Props) => {
   const { mutate } = useUpdateFolder({
     currentFolderId: currentPath,
-    onSuccess: (res) => {
+    onSuccess: ({ data }) => {
       const folder: Folder = {
-        id: res.id,
-        name: res.name,
-        description: res.description,
+        id: data.id,
+        name: data.name,
+        description: data.description,
+        total_photo_count: selectedFolder.total_photo_count,
       };
 
       setSelectedFolder([folder]);
-      onClose(false);
+      onClose();
     }
   });
 
@@ -75,10 +65,12 @@ export const UpdateFolderModal = ({
   };
 
   return (
-    <Modal open={open} onClose={() => onClose(false)}>
-      <Box sx={style} component="form" onSubmit={handleSubmit(onSubmit)}>
-        <Typography variant="h6" mb={2}>フォルダーを更新する</Typography>
-
+    <Modal open={open} onClose={onClose}>
+      <ModalInner
+        onSubmit={handleSubmit(onSubmit)}
+        onClose={onClose}
+        modalTitle="フォルダーを更新する"
+      >
         <TextField
           fullWidth
           label="フォルダー名"
@@ -94,12 +86,7 @@ export const UpdateFolderModal = ({
           {...register("description")}
           margin="normal"
         />
-
-        <Box mt={3} display="flex" justifyContent="flex-end">
-          <Button onClick={() => onClose(false)} sx={{ mr: 1 }}>キャンセル</Button>
-          <Button variant="contained" type="submit">OK</Button>
-        </Box>
-      </Box>
+      </ModalInner>
     </Modal>
   );
 };

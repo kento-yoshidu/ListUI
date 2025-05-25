@@ -1,30 +1,32 @@
 import type { Dispatch, SetStateAction } from "react";
-import { useDeletePhoto } from "@/apis/useDeletePhoto";
 import { Modal, Typography } from "@mui/material";
+import { useDeleteFolder } from "@/apis/useDeleteFolder";
 import { ModalInner } from "./ModalInner";
-import type { File } from "@/type/type";
+import type { Folder } from "@/type/type";
 
 type Props = {
   open: boolean;
   onClose: () => void;
   currentPath: number;
-  selectedFile: File[];
-  setSelectedFile: Dispatch<SetStateAction<File[]>>;
+  selectedFolder: Folder[];
+  setSelectedFolder: Dispatch<SetStateAction<Folder[]>>;
+  photoCount: number;
 }
 
-export const DeletePhotoModal = ({
+export const DeleteFolderModal = ({
   open,
   onClose,
   currentPath,
-  selectedFile,
-  setSelectedFile,
+  selectedFolder,
+  setSelectedFolder,
+  photoCount,
 }: Props) => {
-  const { mutate } = useDeletePhoto({
+  const { mutate } = useDeleteFolder({
     currentFolderId: currentPath,
-    setSelectedFile,
+    setSelectedFolder,
   })
 
-  const photoIds = selectedFile.map((file) => {
+  const photoIds = selectedFolder.map((file) => {
     return file.id;
   });
 
@@ -38,9 +40,9 @@ export const DeletePhotoModal = ({
       <ModalInner
         onSubmit={onSubmit}
         onClose={onClose}
-        modalTitle="写真を削除する"
+        modalTitle="フォルダーを削除する"
       >
-        <Typography>写真を削除してもいいですか？</Typography>
+        <Typography>{photoCount}枚の写真が削除されます。</Typography>
       </ModalInner>
     </Modal>
   );

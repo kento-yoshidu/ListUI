@@ -1,19 +1,20 @@
 import { useState } from "react";
 import { useGetFiles } from "@/apis/useGetFiles";
 import { Box, Checkbox, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
-import { FILE_TYPE } from "@/constants";
 import FolderIcon from "@mui/icons-material/Folder";
-import { BreadCrumb } from "@/components/BreadCrumb";
-import { Information } from "./Information";
-import { CreateFolderModal } from "../modal/CreateFolderModal";
-import { ButtonList } from "./ButtonList";
-import { UploadPhotoModal } from "../modal/UploadPhotoModal";
 import ImageIcon from '@mui/icons-material/Image';
-import { UpdateFolderModal } from "../modal/UpdateFolderModal";
-import { UpdatePhotoModal } from "../modal/UpdatePhotoModal";
-import { NoFiles } from "./Table/Nofiles";
-import { PageTitle } from "./common/PageTitle";
+import { BreadCrumb } from "@/components/BreadCrumb";
+import { Information } from "@/components/Information";
+import { ButtonList } from "@/components/ButtonList";
+import { NoFiles } from "@/components/Table/Nofiles";
+import { PageTitle } from "@/components/common/PageTitle";
+import { CreateFolderModal } from "@/modal/CreateFolderModal";
+import { UploadPhotoModal } from "@/modal/UploadPhotoModal";
+import { UpdateFolderModal } from "@/modal/UpdateFolderModal";
+import { UpdatePhotoModal } from "@/modal/UpdatePhotoModal";
 import { DeletePhotoModal } from "@/modal/DeletePhotoModal";
+import { DeleteFolderModal } from "@/modal/DeleteFolderModal";
+import { FILE_TYPE } from "@/constants";
 import type { File, Folder } from "@/type/type";
 
 export const TableComponent = () => {
@@ -27,6 +28,7 @@ export const TableComponent = () => {
   const [isOpenUpdatePhotoModal, setIsOpenUpdatePhotoModal] = useState(false);
   const [isOpenUploadPhotoModal, setIsOpenUploadPhotoModal] = useState(false);
   const [isOpenDeletePhotoModal, setIsOpenDeletePhotoModal] = useState(false);
+  const [isOpenDeleteFolderModal, setIsOpenDeleteFolderModal] = useState(false);
 
   const { data, isLoading } = useGetFiles(currentPath);
 
@@ -35,6 +37,10 @@ export const TableComponent = () => {
     setSelectedFile([]);
     setSelectedFolder([]);
   };
+
+  const photoCount = selectedFolder.reduce((sum, folder) => {
+    return sum + folder.total_photo_count;
+  }, 0);
 
   const handleCheckboxChange = (clicked: Folder | File, type: string) => {
     if (type === FILE_TYPE.Folder) {
@@ -256,7 +262,7 @@ export const TableComponent = () => {
                         color: "#1976d2",
                       }}
                     />
-                    {`${photo.title} (id=${photo.id})`}
+                    {`${photo.name} (id=${photo.id})`}
                   </TableCell>
                   <TableCell
                     sx={{
@@ -289,29 +295,41 @@ export const TableComponent = () => {
             setIsOpenUpdateFolderModal={setIsOpenUpdateFolderModal}
             setIsOpenUpdatePhotoModal={setIsOpenUpdatePhotoModal}
             setIsOpenDeletePhotoModal={setIsOpenDeletePhotoModal}
+            setIsOpenDeleteFolderModal={setIsOpenDeleteFolderModal}
           />
         )}
       </Box>
 
-      {/* フォルダーモーダル */}
+      {/* フォルダー作成モーダル */}
       <CreateFolderModal
         open={isOpenCreateFolderModal}
-        onClose={setIsOpenCreateFolderModal}
+        onClose={() => setIsOpenCreateFolderModal(false)}
         currentPath={currentPath}
       />
+      {/* フォルダー更新モーダル */}
       <UpdateFolderModal
         open={isOpenUpdateFolderModal}
-        onClose={setIsOpenUpdateFolderModal}
+        onClose={() => setIsOpenUpdateFolderModal(false)}
         currentPath={currentPath}
         selectedFolder={selectedFolder[0]}
         setSelectedFolder={setSelectedFolder}
       />
-      {/* 写真モーダル */}
+      {/* フォルダー削除モーダル */}
+      <DeleteFolderModal
+        open={isOpenDeleteFolderModal}
+        onClose={() => setIsOpenDeleteFolderModal(false)}
+        currentPath={currentPath}
+        selectedFolder={selectedFolder}
+        setSelectedFolder={setSelectedFolder}
+        photoCount={photoCount}
+      />
+      {/* 写真登録モーダル */}
       <UploadPhotoModal
         open={isOpenUploadPhotoModal}
         onClose={() => setIsOpenUploadPhotoModal(false)}
         currentPath={currentPath}
       />
+      {/* 写真更新モーダル */}
       <UpdatePhotoModal
         open={isOpenUpdatePhotoModal}
         onClose={() => setIsOpenUpdatePhotoModal(false)}
@@ -319,6 +337,7 @@ export const TableComponent = () => {
         selectedPhoto={selectedFile[0]}
         setSelectedPhoto={setSelectedFile}
       />
+      {/* 写真削除モーダル */}
       <DeletePhotoModal
         open={isOpenDeletePhotoModal}
         onClose={() => setIsOpenDeletePhotoModal(false)}

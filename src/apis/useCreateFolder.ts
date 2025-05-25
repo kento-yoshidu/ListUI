@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "@/context/SnackBarContext";
-import { API_ENDPOINTS, API_PATH } from "@/constants";
+import { API_ENDPOINTS } from "@/constants";
 
 type Props = {
   name: string;
