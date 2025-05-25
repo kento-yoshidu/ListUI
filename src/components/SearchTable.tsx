@@ -7,7 +7,6 @@ import type { File, Folder } from "@/type/type";
 export const SearchTableComponent = () => {
   const { data, isLoading } = useSearch();
 
-  const [currentPath] = useState<number>(1);
   const [selectedFolder, setSelectedFolder] = useState<Folder[]>([]);
   const [selectedFile, setSelectedFile] = useState<File[]>([]);
 

@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Box, Button, Modal, TextField, Typography } from "@mui/material";
+import { Modal, TextField, Typography } from "@mui/material";
 import { useUploadPhoto } from "@/apis/useUploadPhoto";
 import { useForm } from "react-hook-form";
+import { ModalInner } from "./ModalInner";
 
 type Props = {
   open: boolean;
@@ -73,9 +74,11 @@ export const UploadPhotoModal = ({ open, onClose, currentPath }: Props) => {
 
   return (
     <Modal open={open} onClose={onClose}>
-      <Box sx={style} component="form" onSubmit={handleSubmit(onSubmit)}>
-        <Typography variant="h6" mb={2}>写真をアップロードする</Typography>
-
+      <ModalInner
+        onSubmit={handleSubmit(onSubmit)}
+        onClose={onClose}
+        modalTitle="写真をアップロードする"
+      >
         <TextField
           fullWidth
           label="ファイル名"
@@ -100,23 +103,7 @@ export const UploadPhotoModal = ({ open, onClose, currentPath }: Props) => {
           style={{ marginTop: 16 }}
         />
         {isPending && <Typography mt={1}>アップロード中...</Typography>}
-
-        <Box mt={3} display="flex" justifyContent="flex-end">
-          <Button
-            onClick={() => {
-              onClose();
-              reset();
-              setFile(null);
-            }}
-            sx={{ mr: 1, textTransform: "none" }}
-          >
-            Cancel
-          </Button>
-          <Button variant="contained" type="submit" disabled={isPending || !file}>
-            OK
-          </Button>
-        </Box>
-      </Box>
+      </ModalInner>
     </Modal>
   );
 };

@@ -1,19 +1,8 @@
 import type { Dispatch, SetStateAction } from "react";
-import type { File } from "@/type/type";
 import { useDeletePhoto } from "@/apis/useDeletePhoto";
-import { Box, Button, Modal, Typography } from "@mui/material";
-
-const style = {
-  position: 'absolute' as const,
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  borderRadius: 2,
-  boxShadow: 24,
-  p: 4,
-};
+import { Modal, Typography } from "@mui/material";
+import { ModalInner } from "./ModalInner";
+import type { File } from "@/type/type";
 
 type Props = {
   open: boolean;
@@ -39,22 +28,20 @@ export const DeletePhotoModal = ({
     return file.id;
   });
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
+  const onSubmit = () => {
     mutate(photoIds);
     onClose();
   }
 
   return (
     <Modal open={open} onClose={onClose}>
-      <Box sx={style} component="form" onSubmit={handleSubmit}>
-        <Typography variant="h6" mb={2}>写真を削除する</Typography>
-
-        <Box mt={3} display="flex" justifyContent="flex-end">
-          <Button onClick={onClose} sx={{ mr: 1 }}>キャンセル</Button>
-          <Button variant="contained" type="submit">OK</Button>
-        </Box>
-      </Box>
+      <ModalInner
+        onSubmit={onSubmit}
+        onClose={onClose}
+        modalTitle="写真を削除する"
+      >
+        <Typography>写真を削除してもいいですか？</Typography>
+      </ModalInner>
     </Modal>
   );
 };

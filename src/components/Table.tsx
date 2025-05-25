@@ -300,39 +300,21 @@ export const TableComponent = () => {
         )}
       </Box>
 
-      {/* フォルダーモーダル */}
+      {/* フォルダー作成モーダル */}
       <CreateFolderModal
         open={isOpenCreateFolderModal}
-        onClose={setIsOpenCreateFolderModal}
+        onClose={() => setIsOpenCreateFolderModal(false)}
         currentPath={currentPath}
       />
+      {/* フォルダー更新モーダル */}
       <UpdateFolderModal
         open={isOpenUpdateFolderModal}
-        onClose={setIsOpenUpdateFolderModal}
+        onClose={() => setIsOpenUpdateFolderModal(false)}
         currentPath={currentPath}
         selectedFolder={selectedFolder[0]}
         setSelectedFolder={setSelectedFolder}
       />
-      {/* 写真モーダル */}
-      <UploadPhotoModal
-        open={isOpenUploadPhotoModal}
-        onClose={() => setIsOpenUploadPhotoModal(false)}
-        currentPath={currentPath}
-      />
-      <UpdatePhotoModal
-        open={isOpenUpdatePhotoModal}
-        onClose={() => setIsOpenUpdatePhotoModal(false)}
-        currentPath={currentPath}
-        selectedPhoto={selectedFile[0]}
-        setSelectedPhoto={setSelectedFile}
-      />
-      <DeletePhotoModal
-        open={isOpenDeletePhotoModal}
-        onClose={() => setIsOpenDeletePhotoModal(false)}
-        currentPath={currentPath}
-        selectedFile={selectedFile}
-        setSelectedFile={setSelectedFile}
-      />
+      {/* フォルダー削除モーダル */}
       <DeleteFolderModal
         open={isOpenDeleteFolderModal}
         onClose={() => setIsOpenDeleteFolderModal(false)}
@@ -340,6 +322,28 @@ export const TableComponent = () => {
         selectedFolder={selectedFolder}
         setSelectedFolder={setSelectedFolder}
         photoCount={photoCount}
+      />
+      {/* 写真登録モーダル */}
+      <UploadPhotoModal
+        open={isOpenUploadPhotoModal}
+        onClose={() => setIsOpenUploadPhotoModal(false)}
+        currentPath={currentPath}
+      />
+      {/* 写真更新モーダル */}
+      <UpdatePhotoModal
+        open={isOpenUpdatePhotoModal}
+        onClose={() => setIsOpenUpdatePhotoModal(false)}
+        currentPath={currentPath}
+        selectedPhoto={selectedFile[0]}
+        setSelectedPhoto={setSelectedFile}
+      />
+      {/* 写真削除モーダル */}
+      <DeletePhotoModal
+        open={isOpenDeletePhotoModal}
+        onClose={() => setIsOpenDeletePhotoModal(false)}
+        currentPath={currentPath}
+        selectedFile={selectedFile}
+        setSelectedFile={setSelectedFile}
       />
     </Box>
   )

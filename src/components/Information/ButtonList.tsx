@@ -20,8 +20,6 @@ export const ButtonList = ({
   setIsOpenDeletePhotoModal,
   setIsOpenDeleteFolderModal,
 }: Props) => {
-  console.log("modal = ", setIsOpenDeleteFolderModal);
-
   const handleClick = async () => {
     setIsOpenDeletePhotoModal && setIsOpenDeletePhotoModal(true);
   }
@@ -52,9 +50,9 @@ export const ButtonList = ({
       {setIsOpenDeleteFolderModal && (
         <DeleteIcon onClick={() => setIsOpenDeleteFolderModal(true)} />
       )}
-      {/* {setIsOpenDeletePhotoModal && (
-        <DeleteIcon onClick={handleClick} />
-      )} */}
+      {setIsOpenDeletePhotoModal && (
+        <DeleteIcon onClick={() => setIsOpenDeletePhotoModal(true)} />
+      )}
     </Box>
   )
 }
