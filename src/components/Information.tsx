@@ -3,6 +3,7 @@ import { Box } from "@mui/material";
 import { SinglePhoto } from "@/components/Information/SinglePhoto";
 import { SingleFolder } from "@/components/Information/SingleFolder";
 import type { File, Folder } from "@/type/type";
+import { MultiFolder } from "./Information/MultiFolder";
 
 type Props = {
   currentFolderId: number;
@@ -40,8 +41,12 @@ export const Information = ({
         setIsOpenUpdateFolderModal={setIsOpenUpdateFolderModal}
         setIsOpenDeleteFolderModal={setIsOpenDeleteFolderModal}
       />;
-  } else {
-    Component = <p>info</p>;
+  } else if (selectedFile.length === 0 && selectedFolder.length > 1) {
+    Component =
+      <MultiFolder
+        selectedFolder={selectedFolder}
+        setIsOpenDeleteFolderModal={setIsOpenDeleteFolderModal}
+      />
   }
 
   return (

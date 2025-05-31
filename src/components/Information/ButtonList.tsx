@@ -4,8 +4,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
 type Props = {
-  photoId: number;
-  currentFolderId: number;
   setIsOpenUpdateFolderModal?: Dispatch<SetStateAction<boolean>>;
   setIsOpenUpdatePhotoModal?: Dispatch<SetStateAction<boolean>>;
   setIsOpenDeletePhotoModal?: Dispatch<SetStateAction<boolean>>;
@@ -13,17 +11,11 @@ type Props = {
 };
 
 export const ButtonList = ({
-  photoId,
-  currentFolderId,
   setIsOpenUpdateFolderModal,
   setIsOpenUpdatePhotoModal,
   setIsOpenDeletePhotoModal,
   setIsOpenDeleteFolderModal,
 }: Props) => {
-  const handleClick = async () => {
-    setIsOpenDeletePhotoModal && setIsOpenDeletePhotoModal(true);
-  }
-
   return (
     <Box
       sx={{
