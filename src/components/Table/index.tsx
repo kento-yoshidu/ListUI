@@ -16,6 +16,7 @@ import { DeletePhotoModal } from "@/modal/DeletePhotoModal";
 import { DeleteFolderModal } from "@/modal/DeleteFolderModal";
 import { FILE_TYPE } from "@/constants";
 import type { File, Folder } from "@/type/type";
+import { useMoveFile } from "./hooks/useMoveFile";
 
 export const TableComponent = () => {
   const [currentPath, setCurrentPath] = useState<number>(1);
@@ -31,6 +32,13 @@ export const TableComponent = () => {
   const [isOpenDeleteFolderModal, setIsOpenDeleteFolderModal] = useState(false);
 
   const { data, isLoading } = useGetFiles(currentPath);
+  const {
+    handleDragStart,
+    handleDrop,
+    handleDragOver,
+  } = useMoveFile({
+    selectedFile,
+  });
 
   const handleDoubleClick = (folderId: number) => {
     setCurrentPath(folderId);
@@ -167,6 +175,9 @@ export const TableComponent = () => {
                     key={folder.id}
                     onDoubleClick={() => handleDoubleClick(folder.id)}
                     hover
+                    draggable
+                    onDrop={(e) => handleDrop(e, folder)}
+                    onDragOver={handleDragOver}
                     sx={{
                       cursor: "pointer",
                       fontWeight: 900,
@@ -229,69 +240,74 @@ export const TableComponent = () => {
 
             {!isLoading &&
               data.photos.length > 0 &&
-              data.photos.map((photo: any) => (
-                <TableRow
-                  key={`photo-${photo.id}`}
-                  hover
-                  sx={{
-                    cursor: "pointer",
-                  }}
-                >
-                  <TableCell sx={{ p: 0 }}>
-                    <Box
+              data.photos.map((photo: any) => {
+                return (
+                  <TableRow
+                    key={`photo-${photo.id}`}
+                    hover
+                    draggable
+                    sx={{
+                      cursor: "pointer",
+                    }}
+                    onDragStart={(e) => handleDragStart(photo)}
+                  >
+                    <TableCell sx={{ p: 0 }}>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <Checkbox
+                          checked={selectedFile.some((f) => f.id === photo.id)}
+                          onClick={() => handleCheckboxChange(photo, FILE_TYPE.File)}
+                        />
+                      </Box>
+                    </TableCell>
+
+                    <TableCell
+                      onClick={() => {
+                        setSelectedFolder([])
+                        setSelectedFile([photo])
+                      }}
                       sx={{
                         display: "flex",
-                        justifyContent: 'center',
-                        alignItems: 'center',
+                        alignItems: "center",
+                        gap: 1,
+                        fontWeight: 600,
+                        p: 0,
+                        height: "56px",
                       }}
                     >
-                      <Checkbox
-                        checked={selectedFile.some((f) => f.id === photo.id)}
-                        onClick={() => handleCheckboxChange(photo, FILE_TYPE.File)}
+                      <ImageIcon
+                        sx={{
+                          fontSize: 28,
+                          color: "#1976d2",
+                        }}
                       />
-                    </Box>
-                  </TableCell>
-
-                  <TableCell
-                    onClick={() => {
-                      setSelectedFolder([])
-                      setSelectedFile([photo])
-                    }}
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 1,
-                      fontWeight: 600,
-                      p: 0,
-                      height: "56px",
-                    }}
-                  >
-                    <ImageIcon
+                      {`${photo.name} (id=${photo.id})`}
+                    </TableCell>
+                    <TableCell
                       sx={{
-                        fontSize: 28,
-                        color: "#1976d2",
+                        p: 0,
+                        fontWeight: 600,
                       }}
-                    />
-                    {`${photo.name} (id=${photo.id})`}
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      p: 0,
-                      fontWeight: 600,
-                    }}
-                  >
-                    {photo.description}
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      p: 0,
-                      fontWeight: 600,
-                    }}
-                  >
-                    {photo.uploaded_at}
-                  </TableCell>
-                </TableRow>
-              ))}
+                    >
+                      {photo.description}
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        p: 0,
+                        fontWeight: 600,
+                      }}
+                    >
+                      {photo.uploaded_at}
+                    </TableCell>
+                  </TableRow>
+                )
+              }
+            )}
             </>
           </TableBody>
         </Table>
