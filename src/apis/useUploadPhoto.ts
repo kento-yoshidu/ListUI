@@ -63,6 +63,7 @@ export const useUploadPhoto = (
           name: name,
           folder_id: currentFolderId,
           description: description,
+          size_in_bytes: file.size,
         }),
       });
 

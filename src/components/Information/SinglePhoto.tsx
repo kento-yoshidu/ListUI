@@ -2,6 +2,7 @@ import type { Dispatch, SetStateAction } from "react";
 import { ButtonList } from "./ButtonList";
 import { Box, Chip, Typography } from "@mui/material";
 import type { File } from "@/type/type";
+import { formatFileSize } from "@/utils/photo";
 
 type Props = {
   currentFolderId: number;
@@ -67,6 +68,27 @@ export const SinglePhoto = ({
       <Box>
         <Typography
           sx={{
+            mb: 1,
+            fontSize: 18,
+            fontWeight: 600,
+          }}
+        >
+          画像サイズ
+        </Typography>
+
+        <Typography
+          sx={{
+            fontSize: 15,
+            letterSpacing: "1px"
+          }}
+        >
+          {formatFileSize(selectedFile.size_in_bytes)}
+        </Typography>
+      </Box>
+
+      <Box>
+        <Typography
+          sx={{
             fontSize: 16,
             fontWeight: 600,
           }}
@@ -89,8 +111,6 @@ export const SinglePhoto = ({
       </Box>
 
       <ButtonList
-        currentFolderId={currentFolderId}
-        photoId={selectedFile.id}
         setIsOpenUpdatePhotoModal={setIsOpenUpdatePhotoModal}
         setIsOpenDeletePhotoModal={setIsOpenDeletePhotoModal}
       />

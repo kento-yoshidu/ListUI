@@ -1,5 +1,5 @@
-import { List, ListItem, ListItemText } from "@mui/material"
 import Link from "next/link";
+import { List, ListItem, ListItemText } from "@mui/material";
 
 export const SideBar = () => {
   const links = [
@@ -22,18 +22,29 @@ export const SideBar = () => {
       <List>
         {links.map((link) => (
           <ListItem key={link.href} disablePadding>
-            <Link href={link.href} passHref legacyBehavior>
+            <Link
+              href={link.href}
+              passHref
+              legacyBehavior
+            >
               <ListItemText
                 primary={link.label}
-                sx={{
-                  padding: "4px 16px",
-                  cursor: "pointer",
-                  ":hover": { backgroundColor: "#e0e0e0" },
+                slotProps={{
+                  primary: {
+                    sx: {
+                      padding: "12px 16px",
+                      borderRadius: 2,
+                      fontSize: "14px",
+                      fontWeight: 600,
+                      cursor: "pointer",
+                      ":hover": { backgroundColor: "#a0a0a0" },
+                    },
+                  },
                 }}
               />
             </Link>
           </ListItem>
-        ))}
+        ))};
       </List>
     </aside>
   );

@@ -2,6 +2,7 @@ import type { Dispatch, SetStateAction } from "react";
 import { ButtonList } from "./ButtonList";
 import { Box, Typography } from "@mui/material";
 import type { Folder } from "@/type/type";
+import { formatFileSize } from "@/utils/photo";
 
 type Props = {
   selectedFolder: Folder;
@@ -14,6 +15,8 @@ export const SingleFolder = ({
   setIsOpenUpdateFolderModal,
   setIsOpenDeleteFolderModal,
 }: Props) => {
+  console.log("selected = ", selectedFolder);
+
   return (
     <Box
       sx={{
@@ -68,9 +71,29 @@ export const SingleFolder = ({
           {selectedFolder.total_photo_count}
         </Typography>
       </Box>
+
+      <Box>
+        <Typography
+          sx={{
+            mb: 1,
+            fontSize: 18,
+            fontWeight: 600,
+          }}
+        >
+          トータル画像サイズ
+        </Typography>
+
+        <Typography
+          sx={{
+            fontSize: 15,
+            letterSpacing: "1px"
+          }}
+        >
+          {formatFileSize(selectedFolder.total_photo_size)}
+        </Typography>
+      </Box>
+
       <ButtonList
-        currentFolderId={selectedFolder.id}
-        photoId={selectedFolder.id}
         setIsOpenUpdateFolderModal={setIsOpenUpdateFolderModal}
         setIsOpenDeleteFolderModal={setIsOpenDeleteFolderModal}
       />

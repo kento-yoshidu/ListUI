@@ -10,6 +10,7 @@ export type Folder = {
   name: string;
   description: string;
   total_photo_count: number;
+  total_photo_size: number;
 };
 
 export type File = {
@@ -21,4 +22,5 @@ export type File = {
     id: number;
     tag: string;
   }[],
+  size_in_bytes: number;
 };
