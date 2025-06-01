@@ -1,5 +1,7 @@
-import { File, Folder } from "@/type/type";
 import { useEffect, useState, type DragEvent } from "react"
+import { useMovePhoto } from "@/apis/useMovePhoto";
+import { File, Folder } from "@/type/type";
+import { useQueryClient } from "@tanstack/react-query";
 
 type Props = {
   selectedFile: File[];
@@ -11,35 +13,7 @@ export const useMoveFile = ({
   const [draggedFile, setDraggedFile] = useState<File | null>(null);
   const [dragPreviewEl, setDragPreviewEl] = useState<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    const preview = document.createElement("div");
-    preview.style.position = "fixed";
-    preview.style.zIndex = "9999";
-    preview.style.background = "black";
-    preview.style.color = "white";
-    preview.style.padding = "6px 12px";
-    preview.style.borderRadius = "16px";
-    preview.style.fontSize = "14px";
-    preview.style.pointerEvents = "none";
-    preview.style.transition = "opacity 0.2s";
-    preview.style.opacity = "0";
-    document.body.appendChild(preview);
-    setDragPreviewEl(preview);
-
-    const handleMouseMove = (e: MouseEvent) => {
-      if (preview.style.opacity === "1") {
-        preview.style.left = `${e.clientX + 10}px`;
-        preview.style.top = `${e.clientY + 10}px`;
-      }
-    };
-
-    document.addEventListener("mousemove", handleMouseMove);
-
-    return () => {
-      document.body.removeChild(preview);
-      document.removeEventListener("mousemove", handleMouseMove);
-    };
-  }, []);
+  const { mutate } = useMovePhoto();
 
   const handleDragStart = (
     file: File,
@@ -75,11 +49,22 @@ export const useMoveFile = ({
 
     const filesToMove = isSelected ? selectedFile : [draggedFile];
 
-    console.log(
-      `Move files:`,
-      filesToMove.map((f) => f.name),
-      `→ Folder: ${targetFolder.name} (ID: ${targetFolder.id})`
-    );
+  const ids = filesToMove.map(f => f.id);
+  const folder_id = targetFolder.id;
+
+  // API呼び出し
+  mutate(
+    { ids, folder_id },
+    {
+      onSuccess: () => {
+        // 成功時の処理（例: スナックバー表示やキャッシュ更新）
+        // window.alert("success");
+      },
+      onError: (error) => {
+        window.alert("error");
+      }
+    }
+  );
 
     setDraggedFile(null);
 
@@ -102,3 +87,33 @@ export const useMoveFile = ({
     handleDragEnd,
   };
 };
+
+// useEffect(() => {
+//   const preview = document.createElement("div");
+//   preview.style.position = "fixed";
+//   preview.style.zIndex = "9999";
+//   preview.style.background = "black";
+//   preview.style.color = "white";
+//   preview.style.padding = "6px 12px";
+//   preview.style.borderRadius = "16px";
+//   preview.style.fontSize = "14px";
+//   preview.style.pointerEvents = "none";
+//   preview.style.transition = "opacity 0.2s";
+//   preview.style.opacity = "0";
+//   document.body.appendChild(preview);
+//   setDragPreviewEl(preview);
+
+//   const handleMouseMove = (e: MouseEvent) => {
+//     if (preview.style.opacity === "1") {
+//       preview.style.left = `${e.clientX + 10}px`;
+//       preview.style.top = `${e.clientY + 10}px`;
+//     }
+//   };
+
+//   document.addEventListener("mousemove", handleMouseMove);
+
+//   return () => {
+//     document.body.removeChild(preview);
+//     document.removeEventListener("mousemove", handleMouseMove);
+//   };
+// }, []);
