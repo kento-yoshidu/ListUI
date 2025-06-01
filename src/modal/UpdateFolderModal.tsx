@@ -33,6 +33,7 @@ export const UpdateFolderModal = ({
         name: data.name,
         description: data.description,
         total_photo_count: selectedFolder.total_photo_count,
+        total_photo_size: selectedFolder.total_photo_size,
       };
 
       setSelectedFolder([folder]);
