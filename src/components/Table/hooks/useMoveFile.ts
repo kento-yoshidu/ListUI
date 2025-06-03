@@ -1,7 +1,6 @@
-import { useEffect, useState, type DragEvent } from "react"
+import { useState, type DragEvent } from "react"
 import { useMovePhoto } from "@/apis/useMovePhoto";
-import { File, Folder } from "@/type/type";
-import { useQueryClient } from "@tanstack/react-query";
+import type { File, Folder } from "@/type/type";
 
 type Props = {
   selectedFile: File[];
