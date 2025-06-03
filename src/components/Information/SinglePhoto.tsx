@@ -27,7 +27,7 @@ export const SinglePhoto = ({
     >
       <Typography
         sx={{
-          fontSize: 18,
+          fontSize: 20,
           fontWeight: 600,
         }}
       >
@@ -48,7 +48,7 @@ export const SinglePhoto = ({
         <Typography
           sx={{
             mb: 1,
-            fontSize: 18,
+            fontSize: 16,
             fontWeight: 600,
           }}
         >
@@ -65,20 +65,23 @@ export const SinglePhoto = ({
         </Typography>
       </Box>
 
-      <Box>
+      <Box
+        sx={{
+          display: "flex",
+          gap: 1,
+          fontSize: 16,
+        }}
+      >
         <Typography
           sx={{
-            mb: 1,
-            fontSize: 18,
             fontWeight: 600,
           }}
         >
-          画像サイズ
+          画像サイズ:
         </Typography>
 
         <Typography
           sx={{
-            fontSize: 15,
             letterSpacing: "1px"
           }}
         >
