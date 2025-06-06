@@ -17,6 +17,7 @@ import { DeleteFolderModal } from "@/modal/DeleteFolderModal";
 import { FILE_TYPE } from "@/constants";
 import type { File, Folder } from "@/type/type";
 import { useMoveFile } from "./hooks/useMoveFile";
+import { AddTagToPhotoModal } from "@/modal/AddTagToPhotoModal";
 
 export const TableComponent = () => {
   const [currentPath, setCurrentPath] = useState<number>(1);
@@ -30,6 +31,7 @@ export const TableComponent = () => {
   const [isOpenUploadPhotoModal, setIsOpenUploadPhotoModal] = useState(false);
   const [isOpenDeletePhotoModal, setIsOpenDeletePhotoModal] = useState(false);
   const [isOpenDeleteFolderModal, setIsOpenDeleteFolderModal] = useState(false);
+  const [isOpenAddTagToPhotoModal, setIsOpenAddTagToPhotoModal] = useState(false);
 
   const { data, isLoading } = useGetFiles(currentPath);
   const {
@@ -321,6 +323,7 @@ export const TableComponent = () => {
             setIsOpenUpdatePhotoModal={setIsOpenUpdatePhotoModal}
             setIsOpenDeletePhotoModal={setIsOpenDeletePhotoModal}
             setIsOpenDeleteFolderModal={setIsOpenDeleteFolderModal}
+            setIsOpenAddTagToPhotoModal={setIsOpenAddTagToPhotoModal}
           />
         )}
       </Box>
@@ -368,6 +371,12 @@ export const TableComponent = () => {
         onClose={() => setIsOpenDeletePhotoModal(false)}
         currentPath={currentPath}
         selectedFile={selectedFile}
+        setSelectedFile={setSelectedFile}
+      />
+      <AddTagToPhotoModal
+        open={isOpenAddTagToPhotoModal}
+        onClose={() => setIsOpenAddTagToPhotoModal(false)}
+        selectedFiles={selectedFile}
         setSelectedFile={setSelectedFile}
       />
     </Box>

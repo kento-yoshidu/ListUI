@@ -13,6 +13,7 @@ type Props = {
   setIsOpenUpdatePhotoModal: Dispatch<SetStateAction<boolean>>;
   setIsOpenDeletePhotoModal: Dispatch<SetStateAction<boolean>>;
   setIsOpenDeleteFolderModal: Dispatch<SetStateAction<boolean>>;
+  setIsOpenAddTagToPhotoModal: Dispatch<SetStateAction<boolean>>;
 }
 
 export const Information = ({
@@ -23,6 +24,7 @@ export const Information = ({
   setIsOpenUpdatePhotoModal,
   setIsOpenDeletePhotoModal,
   setIsOpenDeleteFolderModal,
+  setIsOpenAddTagToPhotoModal,
 }: Props) => {
   let Component;
 
@@ -33,6 +35,7 @@ export const Information = ({
         selectedFile={selectedFile[0]}
         setIsOpenUpdatePhotoModal={setIsOpenUpdatePhotoModal}
         setIsOpenDeletePhotoModal={setIsOpenDeletePhotoModal}
+        setIsOpenAddTagToPhotoModal={setIsOpenAddTagToPhotoModal}
       />;
   } else if (selectedFile.length === 0 && selectedFolder.length === 1) {
     Component =

@@ -35,6 +35,10 @@ export const API_ENDPOINTS = {
     path: "photos",
     method: "DELETE",
   },
+  ADD_TAG_TO_PHOTO: {
+    path: "photos/tags",
+    method: "POST",
+  },
 };
 
 export enum API_PATH {
