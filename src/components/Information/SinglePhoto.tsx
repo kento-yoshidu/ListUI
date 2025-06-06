@@ -1,14 +1,16 @@
 import type { Dispatch, SetStateAction } from "react";
 import { ButtonList } from "./ButtonList";
 import { Box, Chip, Typography } from "@mui/material";
-import type { File } from "@/type/type";
 import { formatFileSize } from "@/utils/photo";
+import EditIcon from '@mui/icons-material/Edit';
+import type { File } from "@/type/type";
 
 type Props = {
   currentFolderId: number;
   selectedFile: File;
   setIsOpenUpdatePhotoModal: Dispatch<SetStateAction<boolean>>;
   setIsOpenDeletePhotoModal: Dispatch<SetStateAction<boolean>>;
+  setIsOpenAddTagToPhotoModal: Dispatch<SetStateAction<boolean>>;
 };
 
 export const SinglePhoto = ({
@@ -16,6 +18,7 @@ export const SinglePhoto = ({
   currentFolderId,
   setIsOpenUpdatePhotoModal,
   setIsOpenDeletePhotoModal,
+  setIsOpenAddTagToPhotoModal,
 }: Props) => {
   return (
     <Box
@@ -90,14 +93,31 @@ export const SinglePhoto = ({
       </Box>
 
       <Box>
-        <Typography
+        <Box
           sx={{
-            fontSize: 16,
-            fontWeight: 600,
+            display: "flex",
+            gap: 1,
           }}
         >
-          タグ一覧
-        </Typography>
+          <Typography
+            sx={{
+              fontSize: 16,
+              fontWeight: 600,
+            }}
+          >
+            タグ一覧
+          </Typography>
+          <EditIcon
+            sx={{
+              color: "gray",
+              cursor: "pointer",
+              "&:hover": {
+                color: "#3f51b5",
+              }
+            }}
+            onClick={() => setIsOpenAddTagToPhotoModal(true)}
+          />
+        </Box>
 
         <Box
           sx={{
