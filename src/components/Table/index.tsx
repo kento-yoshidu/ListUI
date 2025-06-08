@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGetFiles } from "@/apis/useGetFiles";
 import { Box, Checkbox, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import FolderIcon from "@mui/icons-material/Folder";
@@ -376,6 +376,7 @@ export const TableComponent = () => {
       <AddTagToPhotoModal
         open={isOpenAddTagToPhotoModal}
         onClose={() => setIsOpenAddTagToPhotoModal(false)}
+        currentPath={currentPath}
         selectedFiles={selectedFile}
         setSelectedFile={setSelectedFile}
       />
