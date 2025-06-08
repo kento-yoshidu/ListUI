@@ -8,6 +8,7 @@ import type { File } from "@/type/type";
 type Props = {
   open: boolean;
   onClose: () => void;
+  currentPath: number;
   selectedFiles: File[];
   setSelectedFile: Dispatch<SetStateAction<File[]>>;
 };
@@ -15,10 +16,12 @@ type Props = {
 export const AddTagToPhotoModal = ({
   open,
   onClose,
+  currentPath,
   selectedFiles,
   setSelectedFile,
 }: Props) => {
   const { mutate } = useAddTagToPhoto({
+    currentPath,
     selectedFile: selectedFiles,
     setSelectedFile,
   });
@@ -62,6 +65,7 @@ export const AddTagToPhotoModal = ({
     });
 
     onClose();
+    setSelectedFile([]);
   };
 
   if (!allTags) {
