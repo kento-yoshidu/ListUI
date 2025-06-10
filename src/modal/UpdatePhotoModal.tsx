@@ -28,7 +28,7 @@ export const UpdatePhotoModal = ({
   const { mutate } = useUpdatePhoto({
     currentFolderId: currentPath,
     onSuccess: (res) => {
-      const file: File = {
+      const file: any = {
         id: res.data.id,
         name: res.data.name,
         description: res.data.description,
